@@ -29,12 +29,10 @@ function upload(options, callback) {
       }
       // All additional file streams field
       case 'sources': {
-        const sources = {};
         Object.keys(fieldValue).forEach(sourceUrl => {
           const sourcePath = fieldValue[sourceUrl];
-          sources[sourceUrl] = fs.createReadStream(sourcePath);
+          formData[sourceUrl] = fs.createReadStream(sourcePath);
         });
-        formData[fieldName] = sources;
         break;
       }
       // Basic fields (strings/booleans) & future fields
