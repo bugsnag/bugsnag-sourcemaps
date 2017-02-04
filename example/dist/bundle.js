@@ -1,0 +1,2 @@
+!function(n){function t(e){if(o[e])return o[e].exports;var c=o[e]={exports:{},id:e,loaded:!1};return n[e].call(c.exports,c,c.exports,t),c.loaded=!0,c.exports}var o={};return t.m=n,t.c=o,t.p="",t(0)}([function(n,t,o){function e(){c("tuesday")}function c(n){"tuesday"===n?u():r()}function u(){i()}function r(){}const i=o(1);e()},function(n,t,o){function e(n){n.nonExistentMethod()&&c(n)}const c=o(2);n.exports=e},function(n,t){function o(n){console.log("Wow, look at that!",n)}n.exports=o}]);
+//# sourceMappingURL=bundle.js.map

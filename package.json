@@ -1,0 +1,26 @@
+{
+  "name": "bugsnag-sourcemap",
+  "description": "A Node.js module to programmatically upload your sourcemap files to Bugsnag",
+  "version": "0.0.0",
+  "keywords": [
+    "bugsnag",
+    "source-maps"
+  ],
+  "homepage": "https://github.com/jacobmarshall/node-bugsnag-sourcemap",
+  "bugs": {
+    "url": "https://github.com/jacobmarshall/node-bugsnag-sourcemap/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Jacob Marshall",
+    "email": "git@jacobmarshall.co",
+    "url": "https://j.msh.al"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jacobmarshall/node-bugsnag-sourcemap.git"
+  },
+  "dependencies": {
+    "request": "^2.79.0"
+  }
+}
