@@ -1,4 +1,4 @@
-# node-bugsnag-sourcemap
+# bugsnag-sourcemap
 
 A Node.js module to programmatically upload your sourcemap files to Bugsnag.
 
