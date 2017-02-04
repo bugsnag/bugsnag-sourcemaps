@@ -22,5 +22,8 @@
   },
   "dependencies": {
     "request": "^2.79.0"
-  }
+  },
+  "files": [
+    "index.js"
+  ]
 }
