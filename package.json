@@ -1,7 +1,7 @@
 {
   "name": "bugsnag-sourcemaps",
   "description": "A Node.js module to programmatically upload your sourcemap files to Bugsnag",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "keywords": [
     "bugsnag",
     "source-maps"
