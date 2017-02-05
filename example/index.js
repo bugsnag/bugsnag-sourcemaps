@@ -7,10 +7,8 @@ upload({
   minifiedUrl: 'http://localhost:8080/dist/bundle.js',
   minifiedFile: path.resolve(__dirname, './dist/bundle.js'),
   sourceMap: path.resolve(__dirname, './dist/bundle.js.map'),
-}, function(err) {
-  if (err) {
-    console.log('Noooooo! ' + err.message);
-  } else {
-    console.log('#winning');
-  }
+}).then(() => {
+  console.log('#winning');
+}).catch(err => {
+  console.log('Noooooo! ' + err.message);
 });
