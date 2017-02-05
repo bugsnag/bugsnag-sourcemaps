@@ -1,18 +1,18 @@
-# bugsnag-sourcemap
+# bugsnag-sourcemaps
 
 A Node.js module to programmatically upload your sourcemap files to Bugsnag.
 
 ## Installation
 
 ```sh
-$ npm install --save-dev bugsnag-sourcemap
+$ npm install --save-dev bugsnag-sourcemaps
 ```
 
 ## Usage
 
 ```js
 import path from 'path';
-import { upload } from 'bugsnag-sourcemap';
+import { upload } from 'bugsnag-sourcemaps';
 
 upload({
   apiKey: 'YOUR_API_KEY_HERE',
