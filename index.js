@@ -13,13 +13,13 @@ const DEFAULT_OPTIONS = {
 };
 
 function upload(options, callback) {
-  const promise = new Promise((resolve, reject) => {
+  const promise = new Promise(function (resolve, reject) {
     const optionsWithDefaults = Object.assign({}, DEFAULT_OPTIONS, options);
     if (!optionsWithDefaults.apiKey) {
       throw new Error('You must provide your API key to upload sourcemaps to Bugsnag.');
     }
     const formData = {};
-    Object.keys(optionsWithDefaults).forEach(fieldName => {
+    Object.keys(optionsWithDefaults).forEach(function (fieldName) {
       const fieldValue = optionsWithDefaults[fieldName];
       switch(fieldName) {
         // Single file stream fields
@@ -30,7 +30,7 @@ function upload(options, callback) {
         }
         // All additional file streams field
         case 'sources': {
-          Object.keys(fieldValue).forEach(sourceUrl => {
+          Object.keys(fieldValue).forEach(function (sourceUrl) {
             const sourcePath = fieldValue[sourceUrl];
             formData[sourceUrl] = fs.createReadStream(sourcePath);
           });
@@ -46,7 +46,7 @@ function upload(options, callback) {
     request.post({
       url: UPLOAD_URL,
       formData,
-    }, (err, res, body) => {
+    }, function (err, res, body) {
       if (err || res.statusCode !== 200) {
         reject(err || new Error(body));
       } else {
