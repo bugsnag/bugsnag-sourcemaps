@@ -38,7 +38,7 @@ function upload(options, callback) {
         }
         // Basic fields (strings/booleans) & future fields
         default: {
-          formData[fieldName] = fieldValue;
+          formData[fieldName] = String(fieldValue);
           break;
         }
       }
