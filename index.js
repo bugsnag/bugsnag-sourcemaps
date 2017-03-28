@@ -12,7 +12,7 @@ const DEFAULT_OPTIONS = {
   // sources: {},
 };
 
-function upload(options, callback) {
+function upload(options, callback, customUploadUrl) {
   const promise = new Promise(function (resolve, reject) {
     const optionsWithDefaults = Object.assign({}, DEFAULT_OPTIONS, options);
     if (!optionsWithDefaults.apiKey) {
@@ -44,7 +44,7 @@ function upload(options, callback) {
       }
     });
     request.post({
-      url: UPLOAD_URL,
+      url: customUploadUrl || UPLOAD_URL,
       formData,
     }, function (err, res, body) {
       if (err || res.statusCode !== 200) {
