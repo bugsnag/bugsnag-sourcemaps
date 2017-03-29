@@ -33,35 +33,22 @@ upload({
 });
 ```
 
-## Custom upload URL
-If you are using Bugsnag Enterprise (on premise installation) with a custom domain, you can pass an optional third argument on the upload method to define your upload url.
+### Bugsnag Enterprise
 
-Same example as above with custom upload url:
+If you are using Bugsnag Enterprise (on premise installation) with a custom domain, you can pass an optional `endpoint` option to define a custom upload url.
 
+Example with endpoint option:
 
 ```js
 import path from 'path';
 import { upload } from 'bugsnag-sourcemaps';
 
 upload({
-  apiKey: 'YOUR_API_KEY_HERE',
-  appVersion: '1.2.3', // optional
-  minifiedUrl: 'http://example.com/assets/example.min.js', // supports wildcards
-  sourceMap: path.resolve(__dirname, 'path/to/example.js.map'),
-  minifiedFile: path.resolve(__dirname, 'path/to/example.min.js'), // optional
-  overwrite: true, // optional
-  sources: {
-    'http://example.com/assets/main.js': path.resolve(__dirname, 'path/to/main.js'),
-    'http://example.com/assets/utils.js': path.resolve(__dirname, 'path/to/utils.js'),
-  },
+  // apiKey, appVersion, etc...
+  endpoint: 'https://bugsnag.my-company.com',
 }, function(err) {
-  if (err) {
-    throw new Error('Something went wrong! ' + err.message);
-  }
-  console.log('Sourcemap was uploaded successfully.');
-},
-   'https://bugsnag.my-company.com'  // optional
-);
+  // ...
+});
 ```
 
 ## License

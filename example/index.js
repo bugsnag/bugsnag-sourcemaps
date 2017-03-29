@@ -7,6 +7,7 @@ upload({
   minifiedUrl: 'http://localhost:8080/dist/bundle.js',
   minifiedFile: path.resolve(__dirname, './dist/bundle.js'),
   sourceMap: path.resolve(__dirname, './dist/bundle.js.map'),
+  endpoint: 'https://bugsnag.my-company.com', // Bugsnag Enterprise
 }).then(() => {
   console.log('#winning');
 }).catch(err => {

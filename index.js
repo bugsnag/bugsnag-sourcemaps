@@ -1,7 +1,6 @@
 const fs = require('fs');
 const request = require('request');
 
-const UPLOAD_URL = 'https://upload.bugsnag.com';
 const DEFAULT_OPTIONS = {
   apiKey: null,
   // appVersion: null,
@@ -10,9 +9,10 @@ const DEFAULT_OPTIONS = {
   // minifiedFile: null,
   // override: false,
   // sources: {},
+  endpoint: 'https://upload.bugsnag.com',
 };
 
-function upload(options, callback, customUploadUrl) {
+function upload(options, callback) {
   const promise = new Promise(function (resolve, reject) {
     const optionsWithDefaults = Object.assign({}, DEFAULT_OPTIONS, options);
     if (!optionsWithDefaults.apiKey) {
@@ -36,6 +36,10 @@ function upload(options, callback, customUploadUrl) {
           });
           break;
         }
+        // Settings (omit from formData)
+        case 'endpoint': {
+          break;
+        }
         // Basic fields (strings/booleans) & future fields
         default: {
           formData[fieldName] = String(fieldValue);
@@ -44,7 +48,7 @@ function upload(options, callback, customUploadUrl) {
       }
     });
     request.post({
-      url: customUploadUrl || UPLOAD_URL,
+      url: optionsWithDefaults.endpoint,
       formData,
     }, function (err, res, body) {
       if (err || res.statusCode !== 200) {
