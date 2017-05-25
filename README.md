@@ -17,6 +17,7 @@ import { upload } from 'bugsnag-sourcemaps';
 upload({
   apiKey: 'YOUR_API_KEY_HERE',
   appVersion: '1.2.3', // optional
+  codeBundleId: '1.0-123', // optional (react-native only)
   minifiedUrl: 'http://example.com/assets/example.min.js', // supports wildcards
   sourceMap: path.resolve(__dirname, 'path/to/example.js.map'),
   minifiedFile: path.resolve(__dirname, 'path/to/example.min.js'), // optional
