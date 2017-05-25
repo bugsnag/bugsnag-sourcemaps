@@ -1,5 +1,9 @@
 # bugsnag-sourcemaps
 
+![Latest version](https://img.shields.io/npm/v/bugsnag-sourcemaps.svg)
+![Dependencies](https://david-dm.org/jacobmarshall/bugsnag-sourcemaps.svg)
+![Total downloads](https://img.shields.io/npm/dt/bugsnag-sourcemaps.svg)
+
 A Node.js module to programmatically upload your sourcemap files to Bugsnag.
 
 ## Installation
