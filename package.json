@@ -1,6 +1,5 @@
 {
   "name": "bugsnag-sourcemaps",
-  "description": "A Node.js module to programmatically upload your sourcemap files to Bugsnag",
   "version": "0.0.7",
   "keywords": [
     "bugsnag",
@@ -21,9 +20,13 @@
     "url": "https://github.com/jmshal/bugsnag-sourcemaps.git"
   },
   "dependencies": {
+    "listr": "^0.12.0",
+    "meow": "^3.7.0",
+    "rc": "^1.2.1",
     "request": "^2.79.0"
   },
   "files": [
-    "index.js"
+    "index.js",
+    "cli.js"
   ]
 }
