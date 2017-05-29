@@ -9,6 +9,7 @@
   "bugs": {
     "url": "https://github.com/jmshal/bugsnag-sourcemaps/issues"
   },
+  "bin": "cli.js",
   "license": "MIT",
   "author": {
     "name": "Jacob Marshall",
