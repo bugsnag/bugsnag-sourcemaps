@@ -61,7 +61,8 @@ const conf = {
 };
 
 // Pull configuration from a local .bugsnagrc file
-Object.assign(conf, rc('bugsnag').sourcemaps);
+const sourcemapsrc = rc('bugsnag').sourcemaps || {};
+Object.assign(conf, sourcemapsrc[process.env.NODE_ENV] || sourcemapsrc);
 
 // Then extract any overrides from the flags
 Object.assign(conf, cli.flags);
