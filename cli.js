@@ -3,7 +3,7 @@
 const meow = require('meow');
 const Listr = require('listr');
 const rc = require('rc');
-const pkgUp = require('pkg-up');
+const readPkgUp = require('read-pkg-up');
 const { upload } = require('./');
 
 const cli = meow(`
@@ -86,8 +86,8 @@ Promise.resolve()
             return (
                 // If there was no appVersion specified, find the package.json within either
                 // the project root, or the current working directory, and use that version.
-                pkgUp(conf.projectRoot || process.cwd())
-                    .then(({ version }) => conf.appVersion = version)
+                readPkgUp(conf.projectRoot || process.cwd())
+                    .then(({ pkg }) => conf.appVersion = pkg.version)
             );
         }
     })
