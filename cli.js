@@ -1,6 +1,7 @@
 const meow = require('meow');
 const Listr = require('listr');
 const rc = require('rc');
+const pkgUp = require('pkg-up');
 const { upload } = require('./');
 
 const cli = meow(`
@@ -77,6 +78,20 @@ const tasks = new Listr([
     },
 ]);
 
-tasks.run().catch(err => {
-    // console.error(err);
-});
+Promise.resolve()
+    .then(() => {
+        if (!conf.appVersion) {
+            return (
+                // If there was no appVersion specified, find the package.json within either
+                // the project root, or the current working directory, and use that version.
+                pkgUp(conf.projectRoot || process.cwd())
+                    .then(({ version }) => conf.appVersion = version)
+            );
+        }
+    })
+    .then(() => {
+        return tasks.run();
+    })
+    .catch(err => {
+        // console.error(err);
+    });
