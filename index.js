@@ -175,7 +175,10 @@ function transformOptions(options) {
   if (options.codeBundleId && options.appVersion) {
     delete options.appVersion;
   }
-  return transformSourcesMap(options);
+  if (options.projectRoot) {
+    return transformSourcesMap(options);
+  }
+  return options;
 }
 
 /**
