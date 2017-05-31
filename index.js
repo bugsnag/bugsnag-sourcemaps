@@ -85,26 +85,22 @@ function readFileJSON(path) {
 }
 
 /**
- * Extracts the source list from the source map contents.
- *
- * The list contains the original file paths from the source map - which are usually absolute.
+ * Replaces (maps over) the source paths from the source map.
  *
  * @param {object} sourceMap The source map contents
- * @returns {Array<string>}
+ * @param {function} mapCallback Map the values of the source paths
  */
-function parseSources(sourceMap) {
-  let files = [];
+function mapSources(sourceMap, mapCallback) {
   if (sourceMap.sources) {
-    files = files.concat(sourceMap.sources);
+    sourceMap.sources = sourceMap.sources.map(mapCallback);
   }
   if (sourceMap.sections) {
     contents.sections.forEach(section => {
       if (section.map && section.map.sources) {
-        files = files.concat(section.map.sources);
+        section.map.sources = section.map.sources.map(mapCallback);
       }
     });
   }
-  return files;
 }
 
 /**
@@ -120,10 +116,13 @@ function transformUploadSources(options) {
   return (
     readFileJSON(options.sourceMap)
       .then(sourceMap => {
-        parseSources(sourceMap).forEach(path => {
+        mapSources(sourceMap, path => {
           const relativePath = getRelativePath(options.projectRoot, path);
           options.sources[relativePath] = path;
+          return relativePath;
         });
+        // Replace the sourceMap option with a buffer of the modified sourcemap.
+        options.sourceMap = Buffer.from(JSON.stringify(sourceMap), 'utf8');
         return options;
       })
       .catch(err => {
@@ -152,6 +151,26 @@ function transformOptions(options) {
 }
 
 /**
+ * Returns a fs.ReadStream or a Buffer, depending on whether the "path" argument is a
+ * valid file path or whether it's a Buffer object (used for sourceMap when uploadSources
+ * is set to `true`, because the sourcemap is modified).
+ *
+ * @param {string|Buffer} path The path of the file, or the file Buffer
+ * @returns {fs.ReadStream|Buffer}
+ */
+function createReadStream(path) {
+  if (typeof path === 'string') {
+    return fs.createReadStream(path);
+  }
+  else if (Buffer.isBuffer(path)) {
+    return path;
+  }
+  else {
+    throw new Error(`Unknown read stream path of type "${typeof path}"`);
+  }
+}
+
+/**
  * Constructs the request's form data.
  *
  * Mainly, file read streams are created for the source map, minified file and the sources.
@@ -174,17 +193,17 @@ function prepareRequest(options) {
       return;
     }
     switch(name) {
-      // Single file stream fields
+      // Single file/buffer stream fields
       case 'sourceMap':
       case 'minifiedFile': {
-        formData[name] = fs.createReadStream(value);
+        formData[name] = createReadStream(value);
         break;
       }
       // All additional file streams field
       case 'sources': {
         Object.keys(value).forEach(function (sourceUrl) {
           const sourcePath = value[sourceUrl];
-          formData[sourceUrl] = fs.createReadStream(sourcePath);
+          formData[sourceUrl] = createReadStream(sourcePath);
         });
         break;
       }
