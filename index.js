@@ -85,22 +85,46 @@ function readFileJSON(path) {
 }
 
 /**
+ * Checks whether a file exists (async Promise version of fs.existsStat).
+ *
+ * @param {string} path The file path
+ * @returns {Promise<boolean>}
+ */
+function doesFileExist(path) {
+  return new Promise(resolve => {
+    fs.stat(path, (err, stat) => {
+      // The file exists if there were no errors, and it's a file
+      resolve(!err && stat.isFile());
+    });
+  });
+}
+
+/**
  * Replaces (maps over) the source paths from the source map.
  *
  * @param {object} sourceMap The source map contents
  * @param {function} mapCallback Map the values of the source paths
  */
 function mapSources(sourceMap, mapCallback) {
+  let chain = Promise.resolve();
+  function pushChain(path, index, arr) {
+    chain = chain
+      .then(() => mapCallback(path))
+      .then(replacement => {
+        arr[index] = replacement || path;
+      });
+  }
   if (sourceMap.sources) {
-    sourceMap.sources = sourceMap.sources.map(mapCallback);
+    sourceMap.sources.forEach(pushChain);
   }
   if (sourceMap.sections) {
     contents.sections.forEach(section => {
       if (section.map && section.map.sources) {
-        section.map.sources = section.map.sources.map(mapCallback);
+        section.map.sources.forEach(pushChain);
       }
     });
   }
+  return chain.then(() => sourceMap);
 }
 
 /**
@@ -112,21 +136,28 @@ function mapSources(sourceMap, mapCallback) {
  * @param {object} options The options
  * @returns {Promise<object>}
  */
-function transformUploadSources(options) {
+function transformSourcesMap(options) {
   return (
     readFileJSON(options.sourceMap)
-      .then(sourceMap => {
+      .then(sourceMap => (
         mapSources(sourceMap, path => {
           const relativePath = getRelativePath(options.projectRoot, path);
-          options.sources[relativePath] = path;
-          return relativePath;
-        });
+          return doesFileExist(path).then(exists => {
+            if (exists && options.uploadSources) {
+              options.sources[relativePath] = path;
+            }
+            return relativePath;
+          });
+        })
+      ))
+      .then(sourceMap => {
         // Replace the sourceMap option with a buffer of the modified sourcemap.
-        options.sourceMap = Buffer.from(JSON.stringify(sourceMap), 'utf8');
+        // options.sourceMap = Buffer.from(JSON.stringify(sourceMap));
+        fs.writeFileSync(options.sourceMap, JSON.stringify(sourceMap)); // FIXME find out why passing a Buffer instead of a fs.ReadStream throws "maxFieldsSize 2097152 exceeded"
         return options;
       })
       .catch(err => {
-        throw new Error('Could not upload sources, source map file could not be read.');
+        throw new Error(`Source map file could not be read (doesn't exist or isn't valid JSON).`);
       })
   );
 }
@@ -144,10 +175,7 @@ function transformOptions(options) {
   if (options.codeBundleId && options.appVersion) {
     delete options.appVersion;
   }
-  if (options.uploadSources) {
-    return transformUploadSources(options);
-  }
-  return options;
+  return transformSourcesMap(options);
 }
 
 /**
