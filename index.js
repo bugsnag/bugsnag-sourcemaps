@@ -118,7 +118,7 @@ function mapSources(sourceMap, mapCallback) {
     sourceMap.sources.forEach(pushChain);
   }
   if (sourceMap.sections) {
-    contents.sections.forEach(section => {
+    sourceMap.sections.forEach(section => {
       if (section.map && section.map.sources) {
         section.map.sources.forEach(pushChain);
       }
