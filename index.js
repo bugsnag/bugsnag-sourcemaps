@@ -13,7 +13,7 @@ const DEFAULT_OPTIONS = {
   sources: {},
   endpoint: 'https://upload.bugsnag.com',
   uploadSources: false,
-  projectRoot: null,
+  projectRoot: '.',
 };
 
 /**
@@ -40,6 +40,9 @@ function validateOptions(options) {
   if (options.uploadSources && !options.projectRoot) {
     throw new Error('You must provide a project root when uploading sources. ' +
       'The project root is used to generate relative paths to the sources.');
+  }
+  if (options.projectRoot && !path.isAbsolute(options.projectRoot)) {
+    options.projectRoot = path.resolve(options.projectRoot);
   }
   return options;
 }
