@@ -18,9 +18,9 @@ const cli = meow(`
       -m, --minified-url URL     The URL your users will request your bundle
       -s, --source-map PATH      The path of the source map file (local)
       -p, --minified-file PATH   The path of the bundle (local)
-      -u, --upload-sources BOOL  Upload source files referenced by the source map
+      -u, --upload-sources       Upload source files referenced by the source map
       -r, --project-root PATH    The root path to remove from absolute file paths
-      -o, --overwrite BOOL       Overwite previously uploaded source maps
+      -o, --overwrite            Overwite previously uploaded source maps
 
     Examples
       $ bugsnag-sourcemaps upload \\
@@ -36,7 +36,7 @@ const cli = meow(`
           --minified-url main.jsbundle \\
           --source-map dist/main.jsbundle.map \\
           --minified-file dist/main.jsbundle \\
-          --upload-sources true
+          --upload-sources
 `, {
     alias: {
         c: 'code-bundle-id',
