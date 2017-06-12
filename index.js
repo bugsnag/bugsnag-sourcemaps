@@ -14,6 +14,7 @@ const DEFAULT_OPTIONS = {
   endpoint: 'https://upload.bugsnag.com',
   uploadSources: false,
   projectRoot: '.',
+  stripProjectRoot: false,
 };
 
 /**
@@ -40,6 +41,10 @@ function validateOptions(options) {
   if (options.uploadSources && !options.projectRoot) {
     throw new Error('You must provide a project root when uploading sources. ' +
       'The project root is used to generate relative paths to the sources.');
+  }
+  if (options.stripProjectRoot && !options.projectRoot) {
+    throw new Error('You must provide a project root when stripping the root ' +
+      'path from the source map.');
   }
   if (options.projectRoot && !path.isAbsolute(options.projectRoot)) {
     options.projectRoot = path.resolve(options.projectRoot);
@@ -179,7 +184,7 @@ function transformOptions(options) {
   if (options.codeBundleId && options.appVersion) {
     delete options.appVersion;
   }
-  if (options.projectRoot) {
+  if (options.stripProjectRoot) {
     options.tempDir = fs.mkdtempSync("bugsnag-sourcemaps")
     return transformSourcesMap(options);
   }
