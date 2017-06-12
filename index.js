@@ -15,6 +15,7 @@ const DEFAULT_OPTIONS = {
   uploadSources: false,
   projectRoot: '.',
   stripProjectRoot: false,
+  addWildcardPrefix: false,
 };
 
 /**
@@ -37,6 +38,9 @@ function applyDefaults(options) {
 function validateOptions(options) {
   if (typeof options.apiKey !== 'string' || options.apiKey.length !== 32) {
     throw new Error('You must provide a valid API key to upload sourcemaps to Bugsnag.');
+  }
+  if (options.addWildcardPrefix && !options.stripProjectRoot) {
+    options.stripProjectRoot = true;
   }
   if (options.uploadSources && !options.projectRoot) {
     throw new Error('You must provide a project root when uploading sources. ' +
@@ -244,7 +248,8 @@ function prepareRequest(options) {
       case 'sources': {
         Object.keys(value).forEach(function (sourceUrl) {
           const sourcePath = value[sourceUrl];
-          formData[sourceUrl] = createReadStream(sourcePath);
+          const key = options.addWildcardPrefix ? '*/' + sourceUrl : sourceUrl;
+          formData[key] = createReadStream(sourcePath);
         });
         break;
       }

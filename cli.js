@@ -21,6 +21,7 @@ const cli = meow(`
       -u, --upload-sources       Upload source files referenced by the source map
       -r, --project-root PATH    The root path to remove from absolute file paths
       -t, --strip-project-root   Strip the root path from file paths in the source map
+      -w, --add-wildcard-prefix  Insert a wildcard prefix when stripping root path
       -o, --overwrite            Overwite previously uploaded source maps
 
     Examples
@@ -51,6 +52,7 @@ const cli = meow(`
         t: 'strip-project-root',
         u: 'upload-sources',
         v: 'app-version',
+        w: 'add-wildcard-prefix',
     },
     // minimistOptions: {
     //     string: [
