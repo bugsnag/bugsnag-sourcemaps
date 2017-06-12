@@ -15,7 +15,7 @@ const cli = meow(`
       -k, --api-key KEY          Your project API key
       -v, --app-version VERSION  The version number of your app
       -c, --code-bundle-id ID    The code bundle id (react-native only)
-      -u, --minified-url URL     The URL your users will request your bundle
+      -m, --minified-url URL     The URL your users will request your bundle
       -s, --source-map PATH      The path of the source map file (local)
       -p, --minified-file PATH   The path of the bundle (local)
       -u, --upload-sources BOOL  Upload source files referenced by the source map
@@ -39,15 +39,16 @@ const cli = meow(`
           --upload-sources true
 `, {
     alias: {
-        k: 'api-key',
-        v: 'app-version',
         c: 'code-bundle-id',
-        u: 'minified-url',
-        s: 'source-map',
-        p: 'minified-file',
-        u: 'upload-sources',
-        r: 'project-root',
+        h: 'help',
+        k: 'api-key',
+        m: 'minified-url',
         o: 'overwrite',
+        p: 'minified-file',
+        r: 'project-root',
+        s: 'source-map',
+        u: 'upload-sources',
+        v: 'app-version',
     },
     // minimistOptions: {
     //     string: [
