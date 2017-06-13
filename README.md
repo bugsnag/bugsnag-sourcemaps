@@ -12,7 +12,40 @@ A Node.js module to programmatically upload your sourcemap files to Bugsnag.
 $ npm install --save-dev bugsnag-sourcemaps
 ```
 
-## Usage
+## Command-line Usage
+
+`bugsnag-sourcemaps` provides a command-line interface for uploading source maps
+directly. Run `bugsnag-sourcemaps --help` for a list of all options.
+
+```shell
+$ npm run bugsnag-sourcemaps -- --api-key YOUR_API_KEY_HERE \
+    --app-version 1.2.3 \
+    --minified-url 'http://example.com/assets/example.min.js' \
+    --source-map path/to/example.js.map \
+    --minified-file path/to/example.min.js \
+    --overwrite \
+    --upload-sources
+```
+
+### Options
+
+```
+-h, --help                 Prints this message
+-k, --api-key KEY          Your project API key
+-v, --app-version VERSION  The version number of your app
+-c, --code-bundle-id ID    The code bundle id (react native only)
+-e, --endpoint URL         The URL of the upload server
+-m, --minified-url URL     The URL your users will request your bundle
+-s, --source-map PATH      The path of the source map file (local)
+-p, --minified-file PATH   The path of the bundle (local)
+-u, --upload-sources       Upload source files referenced by the source map
+-r, --project-root PATH    The root path to remove from absolute file paths
+-t, --strip-project-root   Strip the root path from file paths in the source map
+-w, --add-wildcard-prefix  Insert a wildcard prefix when stripping root path
+-o, --overwrite            Overwite previously uploaded source maps
+```
+
+## API Usage
 
 ```js
 import path from 'path';
