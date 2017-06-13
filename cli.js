@@ -15,6 +15,7 @@ const cli = meow(`
       -k, --api-key KEY          Your project API key
       -v, --app-version VERSION  The version number of your app
       -c, --code-bundle-id ID    The code bundle id (react-native only)
+      -e, --endpoint URL         The URL of the upload server
       -m, --minified-url URL     The URL your users will request your bundle
       -s, --source-map PATH      The path of the source map file (local)
       -p, --minified-file PATH   The path of the bundle (local)
@@ -42,6 +43,7 @@ const cli = meow(`
 `, {
     alias: {
         c: 'code-bundle-id',
+        e: 'endpoint',
         h: 'help',
         k: 'api-key',
         m: 'minified-url',
