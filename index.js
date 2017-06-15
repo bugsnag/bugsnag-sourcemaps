@@ -36,7 +36,7 @@ function applyDefaults(options) {
  * @returns {object}
  */
 function validateOptions(options) {
-  if (typeof options.apiKey !== 'string' || options.apiKey.length !== 32) {
+  if (typeof options.apiKey !== 'string') {
     throw new Error('You must provide a valid API key to upload sourcemaps to Bugsnag.');
   }
   if (options.addWildcardPrefix && !options.stripProjectRoot) {
