@@ -189,7 +189,7 @@ function transformOptions(options) {
     delete options.appVersion;
   }
   if (options.stripProjectRoot) {
-    options.tempDir = fs.mkdtempSync("bugsnag-sourcemaps")
+    options.tempDir = fs.mkdtempSync('bugsnag-sourcemaps');
     return transformSourcesMap(options);
   }
   return options;
