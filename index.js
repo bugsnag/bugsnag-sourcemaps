@@ -256,7 +256,9 @@ function prepareRequest(options) {
       // Ignored settings (omit from formData)
       case 'endpoint':
       case 'uploadSources':
-      case 'projectRoot': {
+      case 'projectRoot':
+      case 'stripProjectRoot':
+      case 'addWildcardPrefix': {
         break;
       }
       // Basic fields (strings/booleans) & future fields
