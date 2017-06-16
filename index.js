@@ -289,7 +289,7 @@ function sendRequest({ options, formData }) {
       formData,
     }, function (err, res, body) {
       if (err || res.statusCode !== 200) {
-        reject(err || new Error(body));
+        reject(err || new Error(`${res.statusMessage} (${res.statusCode}) - ${body}`));
       } else {
         resolve(options);
       }

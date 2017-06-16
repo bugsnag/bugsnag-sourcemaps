@@ -1,5 +1,5 @@
 const path = require('path');
-const upload = require('../').upload;
+const upload = require('../../').upload;
 
 upload({
   apiKey: '11ae66b95ade0e3fcd02735d4bb44984',
