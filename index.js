@@ -258,7 +258,8 @@ function prepareRequest(options) {
       case 'uploadSources':
       case 'projectRoot':
       case 'stripProjectRoot':
-      case 'addWildcardPrefix': {
+      case 'addWildcardPrefix':
+      case 'tempDir': {
         break;
       }
       // Basic fields (strings/booleans) & future fields
