@@ -90,18 +90,17 @@ const tasks = new Listr([
 
 Promise.resolve()
     .then(() => {
-        if (!conf.appVersion) {
+        if (!conf.appVersion && !conf.codeBundleId) {
             return (
                 // If there was no appVersion specified, find the package.json within either
                 // the project root, or the current working directory, and use that version.
                 readPkgUp(conf.projectRoot || process.cwd())
-                    .then(({ pkg }) => conf.appVersion = pkg.version)
+                    .then(({ pkg }) => {
+                        if (pkg) conf.appVersion = pkg.version;
+                    })
             );
         }
     })
     .then(() => {
         return tasks.run();
-    })
-    .catch(err => {
-        // console.error(err);
     });
