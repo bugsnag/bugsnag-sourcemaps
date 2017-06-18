@@ -41,30 +41,30 @@ const cli = meow(`
           --minified-file dist/main.jsbundle \\
           --upload-sources
 `, {
-    alias: {
-        c: 'code-bundle-id',
-        e: 'endpoint',
-        h: 'help',
-        k: 'api-key',
-        m: 'minified-url',
-        o: 'overwrite',
-        p: 'minified-file',
-        r: 'project-root',
-        s: 'source-map',
-        t: 'strip-project-root',
-        u: 'upload-sources',
-        v: 'app-version',
-        w: 'add-wildcard-prefix',
-    },
-    // minimistOptions: {
-    //     string: [
-    //         'app-version',
-    //     ],
-    // },
+  alias: {
+    c: 'code-bundle-id',
+    e: 'endpoint',
+    h: 'help',
+    k: 'api-key',
+    m: 'minified-url',
+    o: 'overwrite',
+    p: 'minified-file',
+    r: 'project-root',
+    s: 'source-map',
+    t: 'strip-project-root',
+    u: 'upload-sources',
+    v: 'app-version',
+    w: 'add-wildcard-prefix',
+  },
+  // minimistOptions: {
+  //   string: [
+  //     'app-version',
+  //   ],
+  // },
 });
 
 const conf = {
-    // Any cli-specific defaults (none currently)
+  // Any cli-specific defaults (none currently)
 };
 
 // Pull configuration from a local .bugsnagrc file
@@ -75,32 +75,32 @@ Object.assign(conf, sourcemapsrc[process.env.NODE_ENV] || sourcemapsrc);
 Object.assign(conf, cli.flags);
 
 for (const key in conf) {
-    // Strip out the single letter (aliases) from meow
-    if (key.length === 1) {
-        delete conf[key];
-    }
+  // Strip out the single letter (aliases) from meow
+  if (key.length === 1) {
+    delete conf[key];
+  }
 }
 
 const tasks = new Listr([
-    {
-        title: 'Uploading sourcemaps',
-        task: () => upload(conf),
-    },
+  {
+    title: 'Uploading sourcemaps',
+    task: () => upload(conf),
+  },
 ]);
 
 Promise.resolve()
-    .then(() => {
-        if (!conf.appVersion && !conf.codeBundleId) {
-            return (
-                // If there was no appVersion specified, find the package.json within either
-                // the project root, or the current working directory, and use that version.
-                readPkgUp(conf.projectRoot || process.cwd())
-                    .then(({ pkg }) => {
-                        if (pkg) conf.appVersion = pkg.version;
-                    })
-            );
-        }
-    })
-    .then(() => {
-        return tasks.run();
-    });
+  .then(() => {
+    if (!conf.appVersion && !conf.codeBundleId) {
+      return (
+        // If there was no appVersion specified, find the package.json within either
+        // the project root, or the current working directory, and use that version.
+        readPkgUp(conf.projectRoot || process.cwd())
+          .then(({ pkg }) => {
+            if (pkg) conf.appVersion = pkg.version;
+          })
+      );
+    }
+  })
+  .then(() => {
+    return tasks.run();
+  });
