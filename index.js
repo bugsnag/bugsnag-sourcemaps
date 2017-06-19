@@ -188,6 +188,10 @@ function transformOptions(options) {
   if (options.codeBundleId && options.appVersion) {
     delete options.appVersion;
   }
+  if (options.addWildcardPrefix && options.minifiedUrl) {
+    if (options.minifiedUrl.indexOf('://') == -1 && options.minifiedUrl[0] != '*')
+      options.minifiedUrl = '*/' + options.minifiedUrl;
+  }
   if (options.stripProjectRoot) {
     options.tempDir = fs.mkdtempSync('bugsnag-sourcemaps');
     return transformSourcesMap(options);
