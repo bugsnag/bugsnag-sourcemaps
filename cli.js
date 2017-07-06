@@ -56,11 +56,9 @@ const cli = meow(`
     v: 'app-version',
     w: 'add-wildcard-prefix',
   },
-  // minimistOptions: {
-  //   string: [
-  //     'app-version',
-  //   ],
-  // },
+  string: [
+    'app-version',
+  ],
 });
 
 const conf = {
