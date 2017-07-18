@@ -32,7 +32,8 @@
     "jest": "^20.0.4"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test-ci": "jest --ci"
   },
   "files": [
     "index.js",

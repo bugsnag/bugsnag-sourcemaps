@@ -7,4 +7,4 @@ node_js:
 sudo: false
 
 script:
-  - npm test -- --ci
+  - npm run test-ci
