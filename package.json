@@ -28,6 +28,12 @@
     "read-pkg-up": "^2.0.0",
     "request": "^2.79.0"
   },
+  "devDependencies": {
+    "jest": "^20.0.4"
+  },
+  "scripts": {
+    "test": "jest"
+  },
   "files": [
     "index.js",
     "cli.js"
