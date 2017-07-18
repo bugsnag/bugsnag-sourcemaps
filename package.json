@@ -46,7 +46,8 @@
     "collectCoverageFrom": [
       "**/*.js",
       "!**/*.test.js",
-      "!node_modules/**/*"
+      "!node_modules/**/*",
+      "!examples/**/*"
     ],
     "coverageReporters": ["lcov"]
   }
