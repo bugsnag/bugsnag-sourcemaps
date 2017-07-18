@@ -7,4 +7,5 @@ node_js:
 sudo: false
 
 script:
-  - npm run test-ci
+  - npm test
+  - npm run coveralls

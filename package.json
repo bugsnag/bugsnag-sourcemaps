@@ -29,14 +29,25 @@
     "request": "^2.79.0"
   },
   "devDependencies": {
+    "coveralls": "^2.13.1",
     "jest": "^20.0.4"
   },
   "scripts": {
-    "test": "jest",
-    "test-ci": "jest --ci"
+    "test": "jest --ci",
+    "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
   "files": [
     "index.js",
     "cli.js"
-  ]
+  ],
+  "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/*.test.js",
+      "!node_modules/**/*"
+    ],
+    "coverageReporters": ["lcov"]
+  }
 }
