@@ -2,9 +2,9 @@
 
 [![Latest version](https://img.shields.io/npm/v/bugsnag-sourcemaps.svg)](https://www.npmjs.com/package/bugsnag-sourcemaps)
 [![Next version](https://img.shields.io/npm/v/bugsnag-sourcemaps/next.svg)](https://www.npmjs.com/package/bugsnag-sourcemaps)
-[![Dependencies](https://david-dm.org/jmshal/bugsnag-sourcemaps.svg)](https://david-dm.org/jmshal/bugsnag-sourcemaps)
+[![Dependencies](https://david-dm.org/bugsnag/bugsnag-sourcemaps.svg)](https://david-dm.org/bugsnag/bugsnag-sourcemaps)
 [![Monthly downloads](https://img.shields.io/npm/dm/bugsnag-sourcemaps.svg)](https://www.npmjs.com/package/bugsnag-sourcemaps)
-[![Build status](https://travis-ci.org/jmshal/bugsnag-sourcemaps.svg?branch=master)](https://travis-ci.org/jmshal/bugsnag-sourcemaps)
+[![Build status](https://travis-ci.org/bugsnag/bugsnag-sourcemaps.svg?branch=master)](https://travis-ci.org/bugsnag/bugsnag-sourcemaps)
 [![Build status](https://ci.appveyor.com/api/projects/status/lfm5kxi7ew6i1780?svg=true)](https://ci.appveyor.com/project/jmshal/bugsnag-sourcemaps)
 
 A Node.js module to programmatically upload your sourcemap files to Bugsnag.
