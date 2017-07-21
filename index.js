@@ -14,7 +14,7 @@ const DEFAULT_OPTIONS = {
   endpoint: 'https://upload.bugsnag.com',
   uploadSources: false,
   projectRoot: '.',
-  stripProjectRoot: false,
+  stripProjectRoot: true,
   addWildcardPrefix: false,
 };
 
@@ -57,15 +57,26 @@ function validateOptions(options) {
 }
 
 /**
- * Returns a relative path from a project root.
+ * Strips the project root from the file path.
  *
  * @param {string} projectRoot The project root path
  * @param {string} filePath The file path
  * @returns {string}
  */
-function getRelativePath(projectRoot, filePath) {
-  if (typeof filePath === 'string' && path.isAbsolute(filePath)) {
-    return path.relative(projectRoot, filePath);
+function stripProjectRoot(projectRoot, filePath) {
+  if (typeof filePath === 'string') {
+    // Check whether the path is an posix absolute file, otherwise check whether it's a
+    // win32 valid absolute file. The order is important here because win32 treats posix
+    // absolute paths as absolute, but posix doesn't do the same for win32.
+    const p = path.posix.isAbsolute(filePath) ? path.posix
+            : path.win32.isAbsolute(filePath) ? path.win32
+            : null;
+    if (p) {
+      const relative = p.relative(projectRoot, filePath);
+      if (relative.indexOf('.') !== 0) {
+        return relative;
+      }
+    }
   }
   return filePath;
 }
@@ -153,7 +164,7 @@ function transformSourcesMap(options) {
     readFileJSON(options.sourceMap)
       .then(sourceMap => (
         mapSources(sourceMap, path => {
-          const relativePath = getRelativePath(options.projectRoot, path);
+          const relativePath = stripProjectRoot(options.projectRoot, path);
           return doesFileExist(path).then(exists => {
             if (exists && options.uploadSources) {
               options.sources[relativePath] = path;
@@ -356,3 +367,21 @@ function upload(options, callback) {
 }
 
 exports.upload = upload;
+
+if (process.env.NODE_ENV === 'test') {
+  Object.assign(exports, {
+    applyDefaults,
+    validateOptions,
+    stripProjectRoot,
+    readFileJSON,
+    doesFileExist,
+    mapSources,
+    transformSourcesMap,
+    transformOptions,
+    createReadStream,
+    prepareRequest,
+    sendRequest,
+    cleanupTempFiles,
+    upload,
+  });
+}
