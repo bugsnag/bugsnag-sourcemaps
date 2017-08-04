@@ -13,6 +13,7 @@ const DEFAULT_OPTIONS = {
   sources: {},
   endpoint: 'https://upload.bugsnag.com',
   uploadSources: false,
+  uploadNodeModules: false,
   projectRoot: '.',
   stripProjectRoot: true,
   addWildcardPrefix: false,
@@ -167,7 +168,13 @@ function transformSourcesMap(options) {
           const relativePath = stripProjectRoot(options.projectRoot, path);
           return doesFileExist(path).then(exists => {
             if (exists && options.uploadSources) {
-              options.sources[relativePath] = path;
+              if (path.indexOf("node_modules") != -1) {
+                if (options.uploadNodeModules) {
+                  options.sources[relativePath] = path;
+                }
+              } else {
+                options.sources[relativePath] = path;
+              }
             }
             return relativePath;
           });
@@ -271,6 +278,7 @@ function prepareRequest(options) {
       // Ignored settings (omit from formData)
       case 'endpoint':
       case 'uploadSources':
+      case 'uploadNodeModules':
       case 'projectRoot':
       case 'stripProjectRoot':
       case 'addWildcardPrefix':

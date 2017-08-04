@@ -20,6 +20,7 @@ const cli = meow(`
       -s, --source-map PATH      The path of the source map file (local)
       -p, --minified-file PATH   The path of the bundle (local)
       -u, --upload-sources       Upload source files referenced by the source map
+      -n, --upload-node-modules  Upload dependency files referenced by the source map
       -r, --project-root PATH    The root path to remove from absolute file paths
       -w, --add-wildcard-prefix  Insert a wildcard prefix when stripping root path
       -o, --overwrite            Overwite previously uploaded source maps
@@ -46,6 +47,7 @@ const cli = meow(`
     h: 'help',
     k: 'api-key',
     m: 'minified-url',
+    n: 'upload-node-modules',
     o: 'overwrite',
     p: 'minified-file',
     r: 'project-root',
