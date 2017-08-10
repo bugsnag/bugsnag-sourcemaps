@@ -12,7 +12,7 @@ A Node.js module to programmatically upload your sourcemap files to Bugsnag.
 ## Installation
 
 ```sh
-$ npm install --save-dev bugsnag-sourcemaps
+$ npm install --global bugsnag-sourcemaps
 ```
 
 ## Command-line Usage
@@ -21,7 +21,7 @@ $ npm install --save-dev bugsnag-sourcemaps
 directly. Run `bugsnag-sourcemaps --help` for a list of all options.
 
 ```shell
-$ npm run bugsnag-sourcemaps -- --api-key YOUR_API_KEY_HERE \
+$ bugsnag-sourcemaps upload --api-key YOUR_API_KEY_HERE \
     --app-version 1.2.3 \
     --minified-url 'http://example.com/assets/example.min.js' \
     --source-map path/to/example.js.map \
