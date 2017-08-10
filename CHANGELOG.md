@@ -1,3 +1,9 @@
+# 1.0.1
+
+## Bug fixes
+
+* Improve wildcard support by being more flexible with bundle paths
+
 # 1.0.0
 
 ## Enhancements
