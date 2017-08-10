@@ -208,7 +208,7 @@ function transformOptions(options) {
   }
   if (options.addWildcardPrefix && options.minifiedUrl) {
     if (options.minifiedUrl.indexOf('://') == -1 && options.minifiedUrl[0] != '*')
-      options.minifiedUrl = '*/' + options.minifiedUrl;
+      options.minifiedUrl = '*' + options.minifiedUrl;
   }
   if (options.stripProjectRoot) {
     options.tempDir = fs.mkdtempSync('bugsnag-sourcemaps');
@@ -270,7 +270,7 @@ function prepareRequest(options) {
       case 'sources': {
         Object.keys(value).forEach(function (sourceUrl) {
           const sourcePath = value[sourceUrl];
-          const key = options.addWildcardPrefix ? '*/' + sourceUrl : sourceUrl;
+          const key = options.addWildcardPrefix ? '*' + sourceUrl : sourceUrl;
           formData[key] = createReadStream(sourcePath);
         });
         break;
