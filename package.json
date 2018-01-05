@@ -5,9 +5,9 @@
     "bugsnag",
     "source-maps"
   ],
-  "homepage": "https://github.com/jmshal/bugsnag-sourcemaps",
+  "homepage": "https://github.com/bugsnag/bugsnag-sourcemaps",
   "bugs": {
-    "url": "https://github.com/jmshal/bugsnag-sourcemaps/issues"
+    "url": "https://github.com/bugsnag/bugsnag-sourcemaps/issues"
   },
   "bin": "cli.js",
   "license": "MIT",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jmshal/bugsnag-sourcemaps.git"
+    "url": "https://github.com/bugsnag/bugsnag-sourcemaps.git"
   },
   "dependencies": {
     "graceful-fs": "^4.1.11",
