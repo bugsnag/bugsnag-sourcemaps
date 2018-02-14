@@ -1,7 +1,7 @@
-const {
-  stripProjectRoot,
-  upload,
-} = require('./index');
+'use strict';
+
+const stripProjectRoot = require('./index').stripProjectRoot
+const upload = require('./index').upload
 
 test('upload function exists', () => {
   expect(typeof upload).toBe('function');
