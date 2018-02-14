@@ -1,3 +1,5 @@
+'use strict';
+
 const fs = require('graceful-fs');
 const request = require('request');
 const path = require('path');
@@ -242,7 +244,7 @@ function createReadStream(path) {
  *
  * Mainly, file read streams are created for the source map, minified file and the sources.
  * Any unknown options are simply added to the form data, to allow for any future options.
- * 
+ *
  * Some options are omitted from the form data, as they are only used as configuration.
  * E.g. "endpoint", "uploadSources", and "projectRoot".
  *
@@ -306,7 +308,10 @@ function prepareRequest(options) {
  * @param {{options: object, formData: object}}
  * @returns {Promise<string>}
  */
-function sendRequest({ options, formData }) {
+function sendRequest(args) {
+  // { options, formData }
+  const options = args.options
+  const formData = args.formData
   return new Promise((resolve, reject) => {
     request.post({
       url: options.endpoint,

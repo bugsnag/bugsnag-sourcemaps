@@ -4,7 +4,7 @@ const meow = require('meow');
 const Listr = require('listr');
 const rc = require('rc');
 const readPkgUp = require('read-pkg-up');
-const { upload } = require('./');
+const upload = require('./').upload;
 
 const cli = meow(`
     Usage
