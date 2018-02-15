@@ -1,3 +1,9 @@
+# 1.0.2
+
+## Maintenance
+
+* Support older versions of node (4.8+)
+
 # 1.0.1
 
 ## Bug fixes
