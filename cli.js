@@ -93,7 +93,8 @@ Promise.resolve()
         // If there was no appVersion specified, find the package.json within either
         // the project root, or the current working directory, and use that version.
         readPkgUp(conf.projectRoot || process.cwd())
-          .then(({ pkg }) => {
+          .then(arg => {
+            const pkg = arg && arg.pkg ? arg.pkg : null;
             if (pkg) conf.appVersion = pkg.version;
           })
       );
