@@ -42,6 +42,9 @@ function validateOptions(options) {
   if (typeof options.apiKey !== 'string') {
     throw new Error('You must provide a valid API key to upload sourcemaps to Bugsnag.');
   }
+  if (typeof options.sourceMap !== 'string') {
+    throw new Error('You must provide a path to the source map you want to upload.')
+  }
   if (options.addWildcardPrefix && !options.stripProjectRoot) {
     options.stripProjectRoot = true;
   }

@@ -2,6 +2,7 @@
 
 const stripProjectRoot = require('./index').stripProjectRoot
 const upload = require('./index').upload
+const validateOptions = require('./index').validateOptions
 
 test('upload function exists', () => {
   expect(typeof upload).toBe('function');
@@ -55,5 +56,18 @@ describe('stripProjectRoot', () => {
       'C:\\Users\\test\\git\\my-app',
       'C:\\Users\\test\\git\\my-app\\src\\index.js'
     )).toBe('src\\index.js');
+  });
+});
+
+describe('validateOptions', () => {
+  test('requires "apiKey"/"--api-key"', () => {
+    expect(() => {
+      validateOptions({})
+    }).toThrow('You must provide a valid API key to upload sourcemaps to Bugsnag.');
+  });
+  test('requires "sourceMap"/"--source-map"', () => {
+    expect(() => {
+      validateOptions({ apiKey: 'abbcc' })
+    }).toThrow('You must provide a path to the source map you want to upload.');
   });
 });
