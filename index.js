@@ -343,8 +343,10 @@ function sendRequest(args) {
  */
 function cleanupTempFiles(options) {
   return new Promise((resolve, reject) => {
-    if (options.tempDir && path.dirname(options.sourceMap) === options.tempDir) {
-      fs.unlinkSync(options.sourceMap);
+    if (options.tempDir) {
+      if (path.dirname(options.sourceMap) === options.tempDir) {
+        fs.unlinkSync(options.sourceMap);
+      }
       fs.rmdir(options.tempDir, (err) => {
         if (err) {
           reject(err);
@@ -370,8 +372,8 @@ function upload(options, callback) {
     Promise.resolve(options)
       .then(applyDefaults)
       .then(validateOptions)
-      .then(transformOptions)
       .then(opts => options = opts)
+      .then(transformOptions)
       .then(prepareRequest)
       .then(sendRequest)
       .catch(err => {
