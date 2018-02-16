@@ -193,6 +193,12 @@ function transformSourcesMap(options) {
         return options;
       })
       .catch(err => {
+        if (err.name === 'SyntaxError') {
+          throw new Error(`Source map file was not valid JSON (${options.sourceMap})`)
+        }
+        if (err.code === 'ENOENT') {
+          throw new Error(`Source map file does not exist (${options.sourceMap})`)
+        }
         throw new Error(`Source map file could not be read (doesn't exist or isn't valid JSON).`);
       })
   );
