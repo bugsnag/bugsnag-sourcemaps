@@ -101,5 +101,5 @@ Promise.resolve()
     }
   })
   .then(() => {
-    return tasks.run();
+    return tasks.run().catch(err => {});
   });

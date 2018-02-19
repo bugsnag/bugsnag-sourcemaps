@@ -193,6 +193,12 @@ function transformSourcesMap(options) {
         return options;
       })
       .catch(err => {
+        if (err.name === 'SyntaxError') {
+          throw new Error(`Source map file was not valid JSON (${options.sourceMap})`)
+        }
+        if (err.code === 'ENOENT') {
+          throw new Error(`Source map file does not exist (${options.sourceMap})`)
+        }
         throw new Error(`Source map file could not be read (doesn't exist or isn't valid JSON).`);
       })
   );
@@ -337,8 +343,10 @@ function sendRequest(args) {
  */
 function cleanupTempFiles(options) {
   return new Promise((resolve, reject) => {
-    if (options.tempDir && path.dirname(options.sourceMap) === options.tempDir) {
-      fs.unlinkSync(options.sourceMap);
+    if (options.tempDir) {
+      if (path.dirname(options.sourceMap) === options.tempDir) {
+        fs.unlinkSync(options.sourceMap);
+      }
       fs.rmdir(options.tempDir, (err) => {
         if (err) {
           reject(err);
@@ -364,8 +372,8 @@ function upload(options, callback) {
     Promise.resolve(options)
       .then(applyDefaults)
       .then(validateOptions)
-      .then(transformOptions)
       .then(opts => options = opts)
+      .then(transformOptions)
       .then(prepareRequest)
       .then(sendRequest)
       .catch(err => {
