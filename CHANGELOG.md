@@ -1,3 +1,11 @@
+# 1.0.3
+
+## Maintenance
+
+* Improve error messaging (#20)
+* Ensure temporary directories are cleaned up (#20)
+* Ensure `sourceMap` option is set (#19)
+
 # 1.0.2
 
 ## Maintenance
