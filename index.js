@@ -3,6 +3,7 @@
 const fs = require('graceful-fs');
 const request = require('request');
 const path = require('path');
+const os = require('os');
 
 const DEFAULT_OPTIONS = {
   apiKey: null,
@@ -222,7 +223,7 @@ function transformOptions(options) {
       options.minifiedUrl = '*' + options.minifiedUrl;
   }
   if (options.stripProjectRoot) {
-    options.tempDir = fs.mkdtempSync('bugsnag-sourcemaps');
+    options.tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bugsnag-sourcemaps'));
     return transformSourcesMap(options);
   }
   return options;
