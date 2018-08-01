@@ -59,6 +59,12 @@ const cli = meow(`
   string: [
     'app-version',
   ],
+  boolean: [
+    'overwrite',
+    'upload-node-modules',
+    'upload-sources',
+    'add-wildcard-prefix',
+  ],
 });
 
 const conf = {

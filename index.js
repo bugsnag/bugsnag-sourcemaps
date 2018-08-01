@@ -297,6 +297,14 @@ function prepareRequest(options) {
       case 'tempDir': {
         break;
       }
+      case 'overwrite': {
+        // the presence of any value for this flag causes the API to interpret it as
+        // true, so only add it to the payload if it is truthy
+        if (options.overwrite) {
+          formData[name] = String(value);
+        }
+        break;
+      }
       // Basic fields (strings/booleans) & future fields
       default: {
         formData[name] = String(value);
