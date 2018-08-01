@@ -1,3 +1,10 @@
+# 1.0.4
+
+## Bug fixes
+
+* Ensure correct values for `overwrite` are sent to API (#24)
+* Ensure OS tempdir is used for temporary files (rather than the current directory) (#22)
+
 # 1.0.3
 
 ## Maintenance
