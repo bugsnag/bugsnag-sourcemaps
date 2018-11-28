@@ -21,6 +21,7 @@
     "url": "https://github.com/bugsnag/bugsnag-sourcemaps.git"
   },
   "dependencies": {
+    "backo": "^1.1.0",
     "graceful-fs": "^4.1.11",
     "listr": "^0.12.0",
     "meow": "^3.7.0",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "coveralls": "^2.13.1",
+    "express": "^4.16.4",
     "jest": "^20.0.4"
   },
   "scripts": {
@@ -38,7 +40,8 @@
   },
   "files": [
     "index.js",
-    "cli.js"
+    "cli.js",
+    "lib/*"
   ],
   "jest": {
     "collectCoverage": true,

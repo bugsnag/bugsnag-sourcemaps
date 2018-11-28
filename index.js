@@ -1,7 +1,7 @@
 'use strict';
 
 const fs = require('graceful-fs');
-const request = require('request');
+const request = require('./lib/request');
 const path = require('path');
 const os = require('os');
 
@@ -330,18 +330,7 @@ function sendRequest(args) {
   // { options, formData }
   const options = args.options
   const formData = args.formData
-  return new Promise((resolve, reject) => {
-    request.post({
-      url: options.endpoint,
-      formData,
-    }, function (err, res, body) {
-      if (err || res.statusCode !== 200) {
-        reject(err || new Error(`${res.statusMessage} (${res.statusCode}) - ${body}`));
-      } else {
-        resolve(options);
-      }
-    });
-  });
+  return request(options.endpoint, formData).then(() => options)
 }
 
 /**

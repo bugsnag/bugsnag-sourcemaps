@@ -1,9 +1,9 @@
 'use strict';
 
-const stripProjectRoot = require('./index').stripProjectRoot
-const upload = require('./index').upload
-const validateOptions = require('./index').validateOptions
-const prepareRequest = require('./index').prepareRequest
+const stripProjectRoot = require('../').stripProjectRoot
+const upload = require('../').upload
+const validateOptions = require('../').validateOptions
+const prepareRequest = require('../').prepareRequest
 
 test('upload function exists', () => {
   expect(typeof upload).toBe('function');
