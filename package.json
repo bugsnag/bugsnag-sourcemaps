@@ -44,7 +44,7 @@
     "lib/*"
   ],
   "jest": {
-    "collectCoverage": false,
+    "collectCoverage": true,
     "coverageDirectory": "coverage",
     "collectCoverageFrom": [
       "**/*.js",
