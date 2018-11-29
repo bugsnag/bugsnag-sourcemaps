@@ -1,6 +1,6 @@
 'use strict'
 
-/* global test, expect, beforeEach */
+/* global test, expect, beforeEach, afterEach */
 
 process.env.BUGSNAG_MIN_BACKOFF_INTERVAL = 0
 process.env.BUGSNAG_MIN_BACKOFF_INTERVAL = 100
@@ -9,6 +9,7 @@ const express = require('express')
 const upload = require('../').upload
 
 beforeEach(() => createTestServer())
+afterEach(() => closeTestServer())
 
 test('it makes a post request to the provided endpoint', () => {
   let n = 0
@@ -88,4 +89,10 @@ const createTestServer = () => {
       resolve()
     })
   })
+}
+
+const closeTestServer = () => {
+  server.close()
+  server = null
+  app = null
 }
