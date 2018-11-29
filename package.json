@@ -50,7 +50,8 @@
       "**/*.js",
       "!**/*.test.js",
       "!node_modules/**/*",
-      "!examples/**/*"
+      "!example/**/*",
+      "!test/**/*"
     ],
     "coverageReporters": [
       "lcov"
