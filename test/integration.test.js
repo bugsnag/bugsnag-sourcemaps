@@ -2,8 +2,7 @@
 
 /* global test, expect, beforeEach, afterEach */
 
-process.env.BUGSNAG_MIN_BACKOFF_INTERVAL = 0
-process.env.BUGSNAG_MIN_BACKOFF_INTERVAL = 100
+process.env.BUGSNAG_RETRY_INTERVAL = 100
 
 const express = require('express')
 const upload = require('../').upload

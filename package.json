@@ -21,7 +21,6 @@
     "url": "https://github.com/bugsnag/bugsnag-sourcemaps.git"
   },
   "dependencies": {
-    "backo": "^1.1.0",
     "graceful-fs": "^4.1.11",
     "listr": "^0.12.0",
     "meow": "^3.7.0",
