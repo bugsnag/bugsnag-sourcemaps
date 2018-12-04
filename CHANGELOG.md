@@ -1,3 +1,9 @@
+# 1.0.5
+
+## Improvements
+
+* Retry failed requests up to 5 times (#26)
+
 # 1.0.4
 
 ## Bug fixes
