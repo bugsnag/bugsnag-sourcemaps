@@ -1,3 +1,9 @@
+# 1.0.6
+
+## Improvements
+
+* Don't set `appVersion=""` when it is not present in `package.json` (#30, fixes #29)
+
 # 1.0.5
 
 ## Improvements
