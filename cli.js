@@ -101,7 +101,9 @@ Promise.resolve()
         readPkgUp(conf.projectRoot || process.cwd())
           .then(arg => {
             const pkg = arg && arg.pkg ? arg.pkg : null;
-            if (pkg) conf.appVersion = pkg.version;
+            // only use pkg.version if it's truthy, because read-pkg-up will
+            // set it to "" (empty string) when it's missing
+            if (pkg && pkg.version) conf.appVersion = pkg.version;
           })
       );
     }
