@@ -77,6 +77,21 @@ test('it doesn’t retry on a 40x failure', () => {
   })
 })
 
+test('it returns the correct error in a synchronous failure', () => {
+  return upload({
+    apiKey: 'API_KEY',
+    // the easiest way to trigger a synchronous
+    // thrown error in request is a malformed url:
+    endpoint: `1231..;`,
+    sourceMap: `${__dirname}/fixtures/noop.min.js.map`
+  }).then(() => {
+    throw new Error('expected promise to be rejected')
+  }).catch(err => {
+    expect(err).toBeTruthy()
+    expect(err.message).toBe('Invalid URI "1231..;"')
+  })
+})
+
 let server, app
 const createTestServer = () => {
   return new Promise((resolve, reject) => {
