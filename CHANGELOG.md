@@ -1,3 +1,9 @@
+# 1.0.7
+
+## Improvements
+
+* Fix error handling logic for missing res param (#31)
+
 # 1.0.6
 
 ## Improvements
