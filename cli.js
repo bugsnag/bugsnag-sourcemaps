@@ -58,6 +58,7 @@ const cli = meow(`
   },
   string: [
     'app-version',
+    'api-key',
   ],
   boolean: [
     'overwrite',
