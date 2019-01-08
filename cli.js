@@ -110,5 +110,7 @@ Promise.resolve()
     }
   })
   .then(() => {
-    return tasks.run().catch(err => {});
+    return tasks.run().catch(err => {
+      process.exitCode = 1;
+    });
   });
