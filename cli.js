@@ -57,12 +57,8 @@ const cli = meow(`
     w: 'add-wildcard-prefix'
   },
   string: [
-<<<<<<< HEAD
-    'app-version'
-=======
     'app-version',
     'api-key',
->>>>>>> master
   ],
   boolean: [
     'overwrite',
