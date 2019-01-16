@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-const fs = require('graceful-fs');
-const request = require('./lib/request');
-const path = require('path');
-const os = require('os');
+const fs = require('graceful-fs')
+const request = require('./lib/request')
+const path = require('path')
+const os = require('os')
 
 const DEFAULT_OPTIONS = {
   apiKey: null,
@@ -19,8 +19,8 @@ const DEFAULT_OPTIONS = {
   uploadNodeModules: false,
   projectRoot: '.',
   stripProjectRoot: true,
-  addWildcardPrefix: false,
-};
+  addWildcardPrefix: false
+}
 
 /**
  * Combines the default options with the user provided ones.
@@ -28,8 +28,8 @@ const DEFAULT_OPTIONS = {
  * @param {object} options The user provided options
  * @returns {object} The combined options
  */
-function applyDefaults(options) {
-  return Object.assign({}, DEFAULT_OPTIONS, options);
+function applyDefaults (options) {
+  return Object.assign({}, DEFAULT_OPTIONS, options)
 }
 
 /**
@@ -39,28 +39,28 @@ function applyDefaults(options) {
  * @param {object} options The options
  * @returns {object}
  */
-function validateOptions(options) {
+function validateOptions (options) {
   if (typeof options.apiKey !== 'string') {
-    throw new Error('You must provide a valid API key to upload sourcemaps to Bugsnag.');
+    throw new Error('You must provide a valid API key to upload sourcemaps to Bugsnag.')
   }
   if (typeof options.sourceMap !== 'string') {
     throw new Error('You must provide a path to the source map you want to upload.')
   }
   if (options.addWildcardPrefix && !options.stripProjectRoot) {
-    options.stripProjectRoot = true;
+    options.stripProjectRoot = true
   }
   if (options.uploadSources && !options.projectRoot) {
     throw new Error('You must provide a project root when uploading sources. ' +
-      'The project root is used to generate relative paths to the sources.');
+      'The project root is used to generate relative paths to the sources.')
   }
   if (options.stripProjectRoot && !options.projectRoot) {
     throw new Error('You must provide a project root when stripping the root ' +
-      'path from the source map.');
+      'path from the source map.')
   }
   if (options.projectRoot && !path.isAbsolute(options.projectRoot)) {
-    options.projectRoot = path.resolve(options.projectRoot);
+    options.projectRoot = path.resolve(options.projectRoot)
   }
-  return options;
+  return options
 }
 
 /**
@@ -70,22 +70,22 @@ function validateOptions(options) {
  * @param {string} filePath The file path
  * @returns {string}
  */
-function stripProjectRoot(projectRoot, filePath) {
+function stripProjectRoot (projectRoot, filePath) {
   if (typeof filePath === 'string') {
     // Check whether the path is an posix absolute file, otherwise check whether it's a
     // win32 valid absolute file. The order is important here because win32 treats posix
     // absolute paths as absolute, but posix doesn't do the same for win32.
     const p = path.posix.isAbsolute(filePath) ? path.posix
-            : path.win32.isAbsolute(filePath) ? path.win32
-            : null;
+      : path.win32.isAbsolute(filePath) ? path.win32
+        : null
     if (p) {
-      const relative = p.relative(projectRoot, filePath);
+      const relative = p.relative(projectRoot, filePath)
       if (relative.indexOf('.') !== 0) {
-        return relative;
+        return relative
       }
     }
   }
-  return filePath;
+  return filePath
 }
 
 /**
@@ -97,21 +97,21 @@ function stripProjectRoot(projectRoot, filePath) {
  * @param {string} path The path to the file
  * @returns {Promise<object>} The JSON contents of the file
  */
-function readFileJSON(path) {
+function readFileJSON (path) {
   return new Promise((resolve, reject) => {
     fs.readFile(path, (err, data) => {
       if (err) {
-        reject(err);
-        return;
+        reject(err)
+        return
       }
       try {
-        const json = JSON.parse(String(data));
-        resolve(json);
+        const json = JSON.parse(String(data))
+        resolve(json)
       } catch (err) {
-        reject(err);
+        reject(err)
       }
-    });
-  });
+    })
+  })
 }
 
 /**
@@ -120,13 +120,13 @@ function readFileJSON(path) {
  * @param {string} path The file path
  * @returns {Promise<boolean>}
  */
-function doesFileExist(path) {
+function doesFileExist (path) {
   return new Promise(resolve => {
     fs.stat(path, (err, stat) => {
       // The file exists if there were no errors, and it's a file
-      resolve(!err && stat.isFile());
-    });
-  });
+      resolve(!err && stat.isFile())
+    })
+  })
 }
 
 /**
@@ -135,26 +135,26 @@ function doesFileExist(path) {
  * @param {object} sourceMap The source map contents
  * @param {function} mapCallback Map the values of the source paths
  */
-function mapSources(sourceMap, mapCallback) {
-  let chain = Promise.resolve();
-  function pushChain(path, index, arr) {
+function mapSources (sourceMap, mapCallback) {
+  let chain = Promise.resolve()
+  function pushChain (path, index, arr) {
     chain = chain
       .then(() => mapCallback(path))
       .then(replacement => {
-        arr[index] = replacement || path;
-      });
+        arr[index] = replacement || path
+      })
   }
   if (sourceMap.sources) {
-    sourceMap.sources.forEach(pushChain);
+    sourceMap.sources.forEach(pushChain)
   }
   if (sourceMap.sections) {
     sourceMap.sections.forEach(section => {
       if (section.map && section.map.sources) {
-        section.map.sources.forEach(pushChain);
+        section.map.sources.forEach(pushChain)
       }
-    });
+    })
   }
-  return chain.then(() => sourceMap);
+  return chain.then(() => sourceMap)
 }
 
 /**
@@ -166,32 +166,32 @@ function mapSources(sourceMap, mapCallback) {
  * @param {object} options The options
  * @returns {Promise<object>}
  */
-function transformSourcesMap(options) {
+function transformSourcesMap (options) {
   return (
     readFileJSON(options.sourceMap)
       .then(sourceMap => (
         mapSources(sourceMap, path => {
-          const relativePath = stripProjectRoot(options.projectRoot, path);
+          const relativePath = stripProjectRoot(options.projectRoot, path)
           return doesFileExist(path).then(exists => {
             if (exists && options.uploadSources) {
-              if (path.indexOf("node_modules") != -1) {
+              if (path.indexOf('node_modules') !== -1) {
                 if (options.uploadNodeModules) {
-                  options.sources[relativePath] = path;
+                  options.sources[relativePath] = path
                 }
               } else {
-                options.sources[relativePath] = path;
+                options.sources[relativePath] = path
               }
             }
-            return relativePath;
-          });
+            return relativePath
+          })
         })
       ))
       .then(sourceMap => {
         // Replace the sourceMap option with a buffer of the modified sourcemap.
-        const tempMap = path.join(options.tempDir, path.basename(options.sourceMap));
-        fs.writeFileSync(tempMap, JSON.stringify(sourceMap)); // FIXME find out why passing a Buffer instead of a fs.ReadStream throws "maxFieldsSize 2097152 exceeded"
-        options.sourceMap = tempMap;
-        return options;
+        const tempMap = path.join(options.tempDir, path.basename(options.sourceMap))
+        fs.writeFileSync(tempMap, JSON.stringify(sourceMap)) // FIXME find out why passing a Buffer instead of a fs.ReadStream throws "maxFieldsSize 2097152 exceeded"
+        options.sourceMap = tempMap
+        return options
       })
       .catch(err => {
         if (err.name === 'SyntaxError') {
@@ -200,9 +200,9 @@ function transformSourcesMap(options) {
         if (err.code === 'ENOENT') {
           throw new Error(`Source map file does not exist (${options.sourceMap})`)
         }
-        throw new Error(`Source map file could not be read (doesn't exist or isn't valid JSON).`);
+        throw new Error(`Source map file could not be read (doesn't exist or isn't valid JSON).`)
       })
-  );
+  )
 }
 
 /**
@@ -214,19 +214,18 @@ function transformSourcesMap(options) {
  * @param {object} options The options
  * @returns {Promise<object>|object}
  */
-function transformOptions(options) {
+function transformOptions (options) {
   if (options.codeBundleId && options.appVersion) {
-    delete options.appVersion;
+    delete options.appVersion
   }
   if (options.addWildcardPrefix && options.minifiedUrl) {
-    if (options.minifiedUrl.indexOf('://') == -1 && options.minifiedUrl[0] != '*')
-      options.minifiedUrl = '*' + options.minifiedUrl;
+    if (options.minifiedUrl.indexOf('://') === -1 && options.minifiedUrl[0] !== '*') { options.minifiedUrl = '*' + options.minifiedUrl }
   }
   if (options.stripProjectRoot) {
-    options.tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bugsnag-sourcemaps'));
-    return transformSourcesMap(options);
+    options.tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bugsnag-sourcemaps'))
+    return transformSourcesMap(options)
   }
-  return options;
+  return options
 }
 
 /**
@@ -237,15 +236,13 @@ function transformOptions(options) {
  * @param {string|Buffer} path The path of the file, or the file Buffer
  * @returns {fs.ReadStream|Buffer}
  */
-function createReadStream(path) {
+function createReadStream (path) {
   if (typeof path === 'string') {
-    return fs.createReadStream(path);
-  }
-  else if (Buffer.isBuffer(path)) {
-    return path;
-  }
-  else {
-    throw new Error(`Unknown read stream path of type "${typeof path}"`);
+    return fs.createReadStream(path)
+  } else if (Buffer.isBuffer(path)) {
+    return path
+  } else {
+    throw new Error(`Unknown read stream path of type "${typeof path}"`)
   }
 }
 
@@ -263,29 +260,29 @@ function createReadStream(path) {
  * @param {object} options The options
  * @returns {{options: object, formData: object}}
  */
-function prepareRequest(options) {
-  const formData = {};
-  Object.keys(options).forEach(function(name) {
-    const value = options[name];
+function prepareRequest (options) {
+  const formData = {}
+  Object.keys(options).forEach(function (name) {
+    const value = options[name]
     // Skip option if values are null/undefined
     if (value === null || typeof value === 'undefined') {
-      return;
+      return
     }
-    switch(name) {
+    switch (name) {
       // Single file/buffer stream fields
       case 'sourceMap':
       case 'minifiedFile': {
-        formData[name] = createReadStream(value);
-        break;
+        formData[name] = createReadStream(value)
+        break
       }
       // All additional file streams field
       case 'sources': {
         Object.keys(value).forEach(function (sourceUrl) {
-          const sourcePath = value[sourceUrl];
-          const key = options.addWildcardPrefix ? '*' + sourceUrl : sourceUrl;
-          formData[key] = createReadStream(sourcePath);
-        });
-        break;
+          const sourcePath = value[sourceUrl]
+          const key = options.addWildcardPrefix ? '*' + sourceUrl : sourceUrl
+          formData[key] = createReadStream(sourcePath)
+        })
+        break
       }
       // Ignored settings (omit from formData)
       case 'endpoint':
@@ -295,27 +292,27 @@ function prepareRequest(options) {
       case 'stripProjectRoot':
       case 'addWildcardPrefix':
       case 'tempDir': {
-        break;
+        break
       }
       case 'overwrite': {
         // the presence of any value for this flag causes the API to interpret it as
         // true, so only add it to the payload if it is truthy
         if (options.overwrite) {
-          formData[name] = String(value);
+          formData[name] = String(value)
         }
-        break;
+        break
       }
       // Basic fields (strings/booleans) & future fields
       default: {
-        formData[name] = String(value);
-        break;
+        formData[name] = String(value)
+        break
       }
     }
-  });
+  })
   return {
     options,
-    formData,
-  };
+    formData
+  }
 }
 
 /**
@@ -326,7 +323,7 @@ function prepareRequest(options) {
  * @param {{options: object, formData: object}}
  * @returns {Promise<string>}
  */
-function sendRequest(args) {
+function sendRequest (args) {
   // { options, formData }
   const options = args.options
   const formData = args.formData
@@ -339,23 +336,23 @@ function sendRequest(args) {
  * @param {object} options The options
  * @returns {Promise<object>}
  */
-function cleanupTempFiles(options) {
+function cleanupTempFiles (options) {
   return new Promise((resolve, reject) => {
     if (options.tempDir) {
       if (path.dirname(options.sourceMap) === options.tempDir) {
-        fs.unlinkSync(options.sourceMap);
+        fs.unlinkSync(options.sourceMap)
       }
       fs.rmdir(options.tempDir, (err) => {
         if (err) {
-          reject(err);
+          reject(err)
         } else {
-          resolve();
+          resolve()
         };
-      });
+      })
     } else {
-      resolve();
+      resolve()
     }
-  });
+  })
 }
 
 /**
@@ -365,30 +362,30 @@ function cleanupTempFiles(options) {
  * @param {function} [callback] The node-style callback (optional)
  * @returns {Promise<string>}
  */
-function upload(options, callback) {
+function upload (options, callback) {
   const promise = (
     Promise.resolve(options)
       .then(applyDefaults)
       .then(validateOptions)
-      .then(opts => options = opts)
+      // .then(opts => options = opts)
       .then(transformOptions)
       .then(prepareRequest)
       .then(sendRequest)
       .catch(err => {
         return cleanupTempFiles(options)
-          .then(() => Promise.reject(err));
+          .then(() => Promise.reject(err))
       })
       .then(cleanupTempFiles)
-  );
+  )
   if (callback) {
     promise
       .then(message => callback(null, message))
-      .catch(err => callback(err, null));
+      .catch(err => callback(err, null))
   }
-  return promise;
+  return promise
 }
 
-exports.upload = upload;
+exports.upload = upload
 
 if (process.env.NODE_ENV === 'test') {
   Object.assign(exports, {
@@ -404,6 +401,6 @@ if (process.env.NODE_ENV === 'test') {
     prepareRequest,
     sendRequest,
     cleanupTempFiles,
-    upload,
-  });
+    upload
+  })
 }

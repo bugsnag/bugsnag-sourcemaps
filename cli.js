@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-const meow = require('meow');
-const Listr = require('listr');
-const rc = require('rc');
-const readPkgUp = require('read-pkg-up');
-const upload = require('./').upload;
+const meow = require('meow')
+const Listr = require('listr')
+const rc = require('rc')
+const readPkgUp = require('read-pkg-up')
+const upload = require('./').upload
 
 const cli = meow(`
     Usage
@@ -54,44 +54,44 @@ const cli = meow(`
     s: 'source-map',
     u: 'upload-sources',
     v: 'app-version',
-    w: 'add-wildcard-prefix',
+    w: 'add-wildcard-prefix'
   },
   string: [
     'app-version',
-    'api-key',
+    'api-key'
   ],
   boolean: [
     'overwrite',
     'upload-node-modules',
     'upload-sources',
-    'add-wildcard-prefix',
-  ],
-});
+    'add-wildcard-prefix'
+  ]
+})
 
 const conf = {
   // Any cli-specific defaults (none currently)
-};
+}
 
 // Pull configuration from a local .bugsnagrc file
-const sourcemapsrc = rc('bugsnag').sourcemaps || {};
-Object.assign(conf, sourcemapsrc[process.env.NODE_ENV] || sourcemapsrc);
+const sourcemapsrc = rc('bugsnag').sourcemaps || {}
+Object.assign(conf, sourcemapsrc[process.env.NODE_ENV] || sourcemapsrc)
 
 // Then extract any overrides from the flags
-Object.assign(conf, cli.flags);
+Object.assign(conf, cli.flags)
 
 for (const key in conf) {
   // Strip out the single letter (aliases) from meow
   if (key.length === 1) {
-    delete conf[key];
+    delete conf[key]
   }
 }
 
 const tasks = new Listr([
   {
     title: 'Uploading sourcemaps',
-    task: () => upload(conf),
-  },
-]);
+    task: () => upload(conf)
+  }
+])
 
 Promise.resolve()
   .then(() => {
@@ -101,16 +101,16 @@ Promise.resolve()
         // the project root, or the current working directory, and use that version.
         readPkgUp(conf.projectRoot || process.cwd())
           .then(arg => {
-            const pkg = arg && arg.pkg ? arg.pkg : null;
+            const pkg = arg && arg.pkg ? arg.pkg : null
             // only use pkg.version if it's truthy, because read-pkg-up will
             // set it to "" (empty string) when it's missing
-            if (pkg && pkg.version) conf.appVersion = pkg.version;
+            if (pkg && pkg.version) conf.appVersion = pkg.version
           })
-      );
+      )
     }
   })
   .then(() => {
-    return tasks.run().catch(err => {
-      process.exitCode = 1;
-    });
-  });
+    return tasks.run().catch(() => {
+      process.exitCode = 1
+    })
+  })

@@ -31,10 +31,11 @@
   "devDependencies": {
     "coveralls": "^2.13.1",
     "express": "^4.16.4",
-    "jest": "^20.0.4"
+    "jest": "^20.0.4",
+    "standard": "^12.0.1"
   },
   "scripts": {
-    "test": "jest --ci",
+    "test": "standard && jest --ci",
     "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
   "files": [
@@ -54,6 +55,16 @@
     ],
     "coverageReporters": [
       "lcov"
+    ]
+  },
+  "standard": {
+    "ignore": [
+      "node_modules",
+      "example",
+      "coverage"
+    ],
+    "env": [
+      "jest"
     ]
   }
 }
