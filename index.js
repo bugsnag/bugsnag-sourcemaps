@@ -367,7 +367,10 @@ function upload (options, callback) {
     Promise.resolve(options)
       .then(applyDefaults)
       .then(validateOptions)
-      // .then(opts => options = opts)
+      .then(opts => {
+        options = opts
+        return options
+      })
       .then(transformOptions)
       .then(prepareRequest)
       .then(sendRequest)
