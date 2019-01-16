@@ -58,7 +58,7 @@ const cli = meow(`
   },
   string: [
     'app-version',
-    'api-key',
+    'api-key'
   ],
   boolean: [
     'overwrite',
@@ -111,6 +111,6 @@ Promise.resolve()
   })
   .then(() => {
     return tasks.run().catch(() => {
-      process.exitCode = 1;
-    });
-  });
+      process.exitCode = 1
+    })
+  })
