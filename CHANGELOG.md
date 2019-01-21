@@ -1,3 +1,11 @@
+# 1.1.0
+
+## Improvements
+
+* Use a non-zero exit code when the CLI is unsuccessful (#32)
+* Add stanardjs linter (#35)
+* Ensure `--api-key` CLI option is always parsed as a string (#33)
+
 # 1.0.7
 
 ## Improvements
