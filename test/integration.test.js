@@ -1,11 +1,13 @@
 'use strict'
 
-/* global test, expect, beforeEach, afterEach */
+/* global test, expect, beforeEach, afterEach, fail */
 
 process.env.BUGSNAG_RETRY_INTERVAL = 100
+process.env.BUGSNAG_TIMEOUT = 100
 
 const express = require('express')
 const upload = require('../').upload
+const net = require('net')
 
 beforeEach(() => createTestServer())
 afterEach(() => closeTestServer())
@@ -41,6 +43,44 @@ test('it retries upon 50x failure', () => {
   })
 })
 
+test('it retries upon socket hangup', () => {
+  let n = 0
+  app.post('/', (req, res) => {
+    n++
+    if (n < 5) return req.connection.destroy()
+    return res.sendStatus(200)
+  })
+  return upload({
+    apiKey: 'API_KEY',
+    endpoint: `http://localhost:${server.address().port}`,
+    sourceMap: `${__dirname}/fixtures/noop.min.js.map`
+  }).then(() => {
+    expect(n).toBe(5)
+  })
+})
+
+test('it retries upon timeout', (done) => {
+  let n = 0
+  const socketServer = net.createServer(socket => {
+    n++
+    // this socket server never says anything
+  })
+  socketServer.listen(() => {
+    upload({
+      apiKey: 'API_KEY',
+      endpoint: `http://localhost:${socketServer.address().port}`,
+      sourceMap: `${__dirname}/fixtures/noop.min.js.map`
+    }).then(() => {
+      fail(new Error('expected promise to be rejected'))
+    }).catch(e => {
+      expect(n).toBe(5)
+      expect(e).toBeTruthy()
+      expect(e.code).toBe('ESOCKETTIMEDOUT')
+      done()
+    })
+  })
+})
+
 test('it eventually gives up retrying', () => {
   let n = 0
   app.post('/', (req, res) => {
@@ -52,7 +92,7 @@ test('it eventually gives up retrying', () => {
     endpoint: `http://localhost:${server.address().port}`,
     sourceMap: `${__dirname}/fixtures/noop.min.js.map`
   }).then(() => {
-    throw new Error('expected promise to be rejected')
+    fail(new Error('expected promise to be rejected'))
   }).catch(err => {
     expect(n).toBe(5)
     expect(err).toBeTruthy()
@@ -70,7 +110,7 @@ test('it doesn’t retry on a 40x failure', () => {
     endpoint: `http://localhost:${server.address().port}`,
     sourceMap: `${__dirname}/fixtures/noop.min.js.map`
   }).then(() => {
-    throw new Error('expected promise to be rejected')
+    fail(new Error('expected promise to be rejected'))
   }).catch(err => {
     expect(err).toBeTruthy()
     expect(n).toBe(1)
@@ -85,7 +125,7 @@ test('it returns the correct error in a synchronous failure', () => {
     endpoint: `1231..;`,
     sourceMap: `${__dirname}/fixtures/noop.min.js.map`
   }).then(() => {
-    throw new Error('expected promise to be rejected')
+    fail(new Error('expected promise to be rejected'))
   }).catch(err => {
     expect(err).toBeTruthy()
     expect(err.message).toBe('Invalid URI "1231..;"')
