@@ -71,8 +71,10 @@ test('it retries upon timeout', (done) => {
       endpoint: `http://localhost:${socketServer.address().port}`,
       sourceMap: `${__dirname}/fixtures/noop.min.js.map`
     }).then(() => {
+      socketServer.close()
       fail(new Error('expected promise to be rejected'))
     }).catch(e => {
+      socketServer.close()
       expect(n).toBe(5)
       expect(e).toBeTruthy()
       expect(e.code).toBe('ESOCKETTIMEDOUT')
