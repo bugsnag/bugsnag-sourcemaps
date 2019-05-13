@@ -145,6 +145,7 @@ describe('socket level tests', () => {
       }).then(() => {
         socketServer.close()
         expect(n).toBe(4)
+        closeTestServer()
         done()
       }).catch(err => fail(err))
     })
