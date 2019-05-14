@@ -116,7 +116,7 @@ describe('socket level tests', () => {
         socketServer.close()
         expect(n).toBe(5)
         expect(e).toBeTruthy()
-        expect(e.code).toBe('ESOCKETTIMEDOUT')
+        expect(e.message).toBe('Connection timed out')
         done()
       })
     })
@@ -162,7 +162,7 @@ describe('socket level tests', () => {
       fail(new Error('expected promise to be rejected'))
     }).catch(err => {
       expect(err).toBeTruthy()
-      expect(err.message).toBe('Invalid URI "1231..;"')
+      expect(err.code).toBe('ECONNREFUSED')
     })
   })
 })
