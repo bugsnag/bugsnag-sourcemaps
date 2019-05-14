@@ -75,9 +75,9 @@ describe('validateOptions', () => {
 
 describe('prepareRequest', () => {
   test('removes options.overwrite when false', () => {
-    expect(prepareRequest({ overwrite: false }).formData).toEqual({})
+    expect(prepareRequest({ overwrite: false })).toEqual({})
   })
   test('does not remove options.overwrite when true', () => {
-    expect(prepareRequest({ overwrite: true }).formData).toEqual({ overwrite: 'true' })
+    expect(prepareRequest({ overwrite: true })).toEqual({ overwrite: 'true' })
   })
 })

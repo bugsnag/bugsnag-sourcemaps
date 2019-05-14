@@ -337,7 +337,7 @@ function cleanupTempFiles (options) {
         fs.unlinkSync(options.sourceMap)
       }
       fs.rmdir(options.tempDir, (err) => {
-        if (err) {
+        if (err && err.code !== 'ENOTEMPTY') {
           reject(err)
         } else {
           resolve()
