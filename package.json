@@ -23,12 +23,14 @@
   "dependencies": {
     "concat-stream": "^2.0.0",
     "form-data": "^2.3.3",
+    "glob": "^7.1.4",
     "graceful-fs": "^4.1.11",
-    "listr": "^0.12.0",
+    "kleur": "^3.0.3",
     "meow": "^3.7.0",
     "once": "^1.4.0",
     "rc": "^1.2.8",
-    "read-pkg-up": "^2.0.0"
+    "read-pkg-up": "^2.0.0",
+    "run-parallel-limit": "^1.0.5"
   },
   "devDependencies": {
     "coveralls": "^2.13.1",

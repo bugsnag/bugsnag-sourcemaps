@@ -1,0 +1,16 @@
+{
+  "name": "ts-source-map-upload-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "upload-source-maps": "../../cli.js --directory --api-key YOUR_API_KEY"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@bugsnag/js": "^6.2.0",
+    "typescript": "^3.4.5"
+  }
+}
