@@ -20,6 +20,8 @@ $ npm install --global bugsnag-sourcemaps
 `bugsnag-sourcemaps` provides a command-line interface for uploading source maps
 directly. Run `bugsnag-sourcemaps --help` for a list of all options.
 
+For a typical browser bundle, where your build generates a single minified file and accompanying source map:
+
 ```shell
 $ bugsnag-sourcemaps upload --api-key YOUR_API_KEY_HERE \
     --app-version 1.2.3 \
@@ -30,6 +32,14 @@ $ bugsnag-sourcemaps upload --api-key YOUR_API_KEY_HERE \
     --upload-sources
 ```
 
+For a typical Node.js project, where your build generates a source map per input file (e.g. Babel, TypeScript):
+
+```shell
+$ bugsnag-sourcemaps upload --api-key YOUR_API_KEY_HERE \
+    --app-version 1.2.3 \
+    --directory
+```
+
 ### Options
 
 ```
@@ -37,6 +47,14 @@ $ bugsnag-sourcemaps upload --api-key YOUR_API_KEY_HERE \
 -k, --api-key KEY          Your project API key
 -v, --app-version VERSION  The version number of your app
 -c, --code-bundle-id ID    The code bundle id (react native only)
+-d, --directory [PATH]     Enable directory mode. Searches for multiple source
+                           maps in the directory and uploads them all. Only
+                           supply a path if the directory you want to search is
+                           not the same as your project root.
+                           This option makes the following options redundant:
+                             --source-map
+                             --minified-url
+                             --minified-file
 -e, --endpoint URL         The URL of the upload server
 -m, --minified-url URL     The URL your users will request your bundle
 -s, --source-map PATH      The path of the source map file (local)
@@ -74,9 +92,9 @@ upload({
 });
 ```
 
-### Bugsnag Enterprise
+### Bugsnag On-premise
 
-If you are using Bugsnag Enterprise (on premise installation) with a custom domain, you can pass an optional `endpoint` option to define a custom upload url.
+If you are using Bugsnag On-Premise, you use the `endpoint` option to set the url to your upload server.
 
 Example with endpoint option:
 
