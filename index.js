@@ -309,10 +309,7 @@ function prepareRequest (options) {
       }
     }
   })
-  return {
-    options,
-    formData
-  }
+  return formData
 }
 
 /**
@@ -323,11 +320,8 @@ function prepareRequest (options) {
  * @param {{options: object, formData: object}}
  * @returns {Promise<string>}
  */
-function sendRequest (args) {
-  // { options, formData }
-  const options = args.options
-  const formData = args.formData
-  return request(options.endpoint, formData).then(() => options)
+function sendRequest (options) {
+  return new Promise((resolve, reject) => request(options.endpoint, () => prepareRequest(options), () => resolve(options), reject))
 }
 
 /**
@@ -372,7 +366,6 @@ function upload (options, callback) {
         return options
       })
       .then(transformOptions)
-      .then(prepareRequest)
       .then(sendRequest)
       .catch(err => {
         return cleanupTempFiles(options)
