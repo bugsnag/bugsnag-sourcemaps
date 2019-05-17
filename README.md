@@ -94,7 +94,7 @@ upload({
 
 ### Bugsnag On-premise
 
-If you are using Bugsnag On-premise, you use the `endpoint` option to set the url to your upload server.
+If you are using Bugsnag On-premise, you should use the `endpoint` option to set the url of your upload server.
 
 Example with endpoint option:
 
