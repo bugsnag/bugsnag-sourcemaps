@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node lib/app.js",
     "build": "babel src -d lib --source-maps",
     "upload-source-maps": "../../cli.js --directory --api-key YOUR_API_KEY"
   },
