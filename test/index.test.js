@@ -1,6 +1,7 @@
 'use strict'
 
 const path = require('path')
+const concat = require('concat-stream')
 
 afterEach(() => jest.resetModules())
 
@@ -71,6 +72,78 @@ test('multiple uploads', () => {
         minifiedFile: `${__dirname}/fixtures/multi/services/widget.js`,
         sourceMap: 'widget.js.map'
       }
+    ])
+  })
+})
+
+test('multiple uploads (resolving relative source paths inside map)', () => {
+  let mockCalled = 0
+  let mockCalledWith = []
+  const mockConcat = concat
+  jest.mock('../lib/request', () => {
+    return (endpoint, makePayload, onSuccess, onError) => {
+      mockCalled++
+      const payload = makePayload()
+      payload.sourceMap.pipe(mockConcat(data => {
+        payload.sourceMapData = JSON.parse(data)
+        mockCalledWith.push(payload)
+        onSuccess()
+      }))
+    }
+  })
+
+  const upload = require('../').upload
+  return upload({
+    apiKey: 'API_KEY',
+    projectRoot: `${__dirname}/fixtures/multi-relative`,
+    directory: true
+  }).then(() => {
+    expect(mockCalled).toBe(4)
+
+    const uploads = mockCalledWith.reduce((accum, payload) => {
+      return accum.concat({
+        minifiedUrl: payload.minifiedUrl,
+        minifiedFile: payload.minifiedFile.path,
+        sourceMap: path.basename(payload.sourceMap.path),
+        sourceMapData: payload.sourceMapData
+      })
+    }, []).sort((a, b) => a.minifiedUrl > b.minifiedUrl)
+
+    const orderedSourceMapContent = uploads.map(u => {
+      const data = u.sourceMapData
+      // bad mutating this array in an iterator but needs must
+      delete u.sourceMapData
+      return data
+    })
+
+    expect(uploads).toEqual([
+      {
+        minifiedUrl: 'lib/app.js',
+        minifiedFile: `${__dirname}/fixtures/multi-relative/lib/app.js`,
+        sourceMap: 'app.js.map'
+      },
+      {
+        minifiedUrl: 'lib/services/bugsnag.js',
+        minifiedFile: `${__dirname}/fixtures/multi-relative/lib/services/bugsnag.js`,
+        sourceMap: 'bugsnag.js.map'
+      },
+      {
+        minifiedUrl: 'lib/services/logger.js',
+        minifiedFile: `${__dirname}/fixtures/multi-relative/lib/services/logger.js`,
+        sourceMap: 'logger.js.map'
+      },
+      {
+        minifiedUrl: 'lib/services/widget.js',
+        minifiedFile: `${__dirname}/fixtures/multi-relative/lib/services/widget.js`,
+        sourceMap: 'widget.js.map'
+      }
+    ])
+
+    expect(orderedSourceMapContent.map(map => map.sources[0])).toEqual([
+      'src/app.js',
+      'src/services/bugsnag.js',
+      'src/services/logger.js',
+      'src/services/widget.js'
     ])
   })
 })
