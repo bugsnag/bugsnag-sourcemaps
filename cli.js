@@ -100,6 +100,6 @@ for (const key in conf) {
 }
 
 upload(conf, logger).catch(err => {
-  logger.error(`Error uploding source maps: ${err.message}`)
+  logger.error(`Error uploading source maps: ${err.message}`)
   process.exitCode = 1
 })
