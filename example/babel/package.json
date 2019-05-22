@@ -1,0 +1,20 @@
+{
+  "name": "babel-source-map-upload-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node lib/app.js",
+    "build": "babel src -d lib --source-maps",
+    "upload-source-maps": "../../cli.js --directory --api-key YOUR_API_KEY"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4"
+  },
+  "dependencies": {
+    "@bugsnag/js": "^6.2.0"
+  }
+}

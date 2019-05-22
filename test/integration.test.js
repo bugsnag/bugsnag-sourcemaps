@@ -22,7 +22,7 @@ describe('HTTP level tests', () => {
     return upload({
       apiKey: 'API_KEY',
       endpoint: `http://localhost:${server.address().port}`,
-      sourceMap: `${__dirname}/fixtures/noop.min.js.map`
+      sourceMap: `${__dirname}/fixtures/single/noop.min.js.map`
     }).then(() => {
       expect(n).toBe(1)
     })
@@ -38,7 +38,7 @@ describe('HTTP level tests', () => {
     return upload({
       apiKey: 'API_KEY',
       endpoint: `http://localhost:${server.address().port}`,
-      sourceMap: `${__dirname}/fixtures/noop.min.js.map`
+      sourceMap: `${__dirname}/fixtures/single/noop.min.js.map`
     }).then(() => {
       expect(n).toBe(5)
     })
@@ -54,7 +54,7 @@ describe('HTTP level tests', () => {
     return upload({
       apiKey: 'API_KEY',
       endpoint: `http://localhost:${server.address().port}`,
-      sourceMap: `${__dirname}/fixtures/noop.min.js.map`
+      sourceMap: `${__dirname}/fixtures/single/noop.min.js.map`
     }).then(() => {
       expect(n).toBe(5)
     })
@@ -69,7 +69,7 @@ describe('HTTP level tests', () => {
     return upload({
       apiKey: 'API_KEY',
       endpoint: `http://localhost:${server.address().port}`,
-      sourceMap: `${__dirname}/fixtures/noop.min.js.map`
+      sourceMap: `${__dirname}/fixtures/single/noop.min.js.map`
     }).then(() => {
       fail(new Error('expected promise to be rejected'))
     }).catch(err => {
@@ -87,7 +87,7 @@ describe('HTTP level tests', () => {
     return upload({
       apiKey: 'API_KEY',
       endpoint: `http://localhost:${server.address().port}`,
-      sourceMap: `${__dirname}/fixtures/noop.min.js.map`
+      sourceMap: `${__dirname}/fixtures/single/noop.min.js.map`
     }).then(() => {
       fail(new Error('expected promise to be rejected'))
     }).catch(err => {
@@ -108,7 +108,7 @@ describe('socket level tests', () => {
       upload({
         apiKey: 'API_KEY',
         endpoint: `http://localhost:${socketServer.address().port}`,
-        sourceMap: `${__dirname}/fixtures/noop.min.js.map`
+        sourceMap: `${__dirname}/fixtures/single/noop.min.js.map`
       }).then(() => {
         socketServer.close()
         fail(new Error('expected promise to be rejected'))
@@ -141,7 +141,7 @@ describe('socket level tests', () => {
       upload({
         apiKey: 'API_KEY',
         endpoint: `http://localhost:${port}`,
-        sourceMap: `${__dirname}/fixtures/noop.min.js.map`
+        sourceMap: `${__dirname}/fixtures/single/noop.min.js.map`
       }).then(() => {
         socketServer.close()
         expect(n).toBe(4)
@@ -157,7 +157,7 @@ describe('socket level tests', () => {
       // the easiest way to trigger a synchronous
       // thrown error in request is a malformed url:
       endpoint: `1231..;`,
-      sourceMap: `${__dirname}/fixtures/noop.min.js.map`
+      sourceMap: `${__dirname}/fixtures/single/noop.min.js.map`
     }).then(() => {
       fail(new Error('expected promise to be rejected'))
     }).catch(err => {

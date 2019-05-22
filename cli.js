@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
 const meow = require('meow')
-const Listr = require('listr')
 const rc = require('rc')
-const readPkgUp = require('read-pkg-up')
+const logger = require('./lib/cli-logger')
 const upload = require('./').upload
 
 const cli = meow(`
@@ -15,6 +14,14 @@ const cli = meow(`
       -k, --api-key KEY          Your project API key
       -v, --app-version VERSION  The version number of your app
       -c, --code-bundle-id ID    The code bundle id (react-native only)
+      -d, --directory [PATH]     Enable directory mode. Searches for multiple source
+                                 maps in the directory and uploads them all. Only
+                                 supply a path if the directory you want to search is
+                                 not the same as your project root.
+                                 This option makes the following options redundant:
+                                   --source-map
+                                   --minified-url
+                                   --minified-file
       -e, --endpoint URL         The URL of the upload server
       -m, --minified-url URL     The URL your users will request your bundle
       -s, --source-map PATH      The path of the source map file (local)
@@ -40,6 +47,11 @@ const cli = meow(`
           --source-map dist/main.jsbundle.map \\
           --minified-file dist/main.jsbundle \\
           --upload-sources
+      OR
+      $ bugsnag-sourcemaps upload \\
+          --directory \\
+          --api-key f915102cdb8153ee934b8549c930aa1b \\
+          --app-version 1.0.0
 `, {
   alias: {
     c: 'code-bundle-id',
@@ -54,7 +66,8 @@ const cli = meow(`
     s: 'source-map',
     u: 'upload-sources',
     v: 'app-version',
-    w: 'add-wildcard-prefix'
+    w: 'add-wildcard-prefix',
+    d: 'directory'
   },
   string: [
     'app-version',
@@ -86,31 +99,7 @@ for (const key in conf) {
   }
 }
 
-const tasks = new Listr([
-  {
-    title: 'Uploading sourcemaps',
-    task: () => upload(conf)
-  }
-])
-
-Promise.resolve()
-  .then(() => {
-    if (!conf.appVersion && !conf.codeBundleId) {
-      return (
-        // If there was no appVersion specified, find the package.json within either
-        // the project root, or the current working directory, and use that version.
-        readPkgUp(conf.projectRoot || process.cwd())
-          .then(arg => {
-            const pkg = arg && arg.pkg ? arg.pkg : null
-            // only use pkg.version if it's truthy, because read-pkg-up will
-            // set it to "" (empty string) when it's missing
-            if (pkg && pkg.version) conf.appVersion = pkg.version
-          })
-      )
-    }
-  })
-  .then(() => {
-    return tasks.run().catch(() => {
-      process.exitCode = 1
-    })
-  })
+upload(conf, logger).catch(err => {
+  logger.error(`Error uploding source maps: ${err.message}`)
+  process.exitCode = 1
+})
