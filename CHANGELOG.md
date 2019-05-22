@@ -1,3 +1,12 @@
+# 1.2.0 (2019-05-22)
+
+## Improvements
+
+* Add `--directory` mode [#40](https://github.com/bugsnag/bugsnag-sourcemaps/pull/40)
+* Transform relative paths in source map `sources[]` property [#41](https://github.com/bugsnag/bugsnag-sourcemaps/pull/41)
+* Retry in more kinds of network failures [#39](https://github.com/bugsnag/bugsnag-sourcemaps/pull/39)
+* Tolerate `ENOTEMPTY` when attempting to delete a directory [#38](https://github.com/bugsnag/bugsnag-sourcemaps/pull/38)
+
 # 1.1.0
 
 ## Improvements
