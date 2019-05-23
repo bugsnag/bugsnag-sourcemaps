@@ -100,6 +100,8 @@ for (const key in conf) {
 }
 
 upload(conf, logger).catch(err => {
-  logger.error(`Error uploading source maps: ${err.message}`)
+  const stack = (err && err.stack) ? err.stack : err
+  const apiResponse = (err && err.errors) ? `\n\n  API response:\n    ${err.errors.join(', ')}\n` : ''
+  logger.error(`Error uploading source maps: ${stack}${apiResponse}`)
   process.exitCode = 1
 })
