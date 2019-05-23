@@ -1,3 +1,9 @@
+# 1.2.1 (2019-05-23)
+
+## Bug fixes
+
+* Fix a bug with `--upload-sources`, and ensure it works in conjunction with directory mode [#43](https://github.com/bugsnag/bugsnag-sourcemaps/pull/43)
+
 # 1.2.0 (2019-05-22)
 
 ## Improvements
