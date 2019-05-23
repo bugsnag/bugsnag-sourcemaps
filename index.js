@@ -93,7 +93,7 @@ function uploadMany (options, logger) {
         const minifiedUrl = path.relative(options.projectRoot, f.replace(/\.map$/, ''))
         const minifiedFile = f.replace(/\.map$/, '')
         return cb => {
-          const opts = Object.assign({}, options, { sourceMap: f, minifiedUrl: minifiedUrl, minifiedFile: minifiedFile })
+          const opts = Object.assign({}, options, { sourceMap: f, minifiedUrl: minifiedUrl, minifiedFile: minifiedFile, sources: {} })
           uploadOne(opts, logger)
             .then(() => {
               logger.info(`Upload successful (${path.basename(f)})`)
