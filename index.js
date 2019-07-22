@@ -71,7 +71,7 @@ function uploadOne (options, logger) {
   return Promise.resolve(options)
     .then(transformOptions)
     .then(sendRequest)
-    .catch(() => Promise.reject(err))
+    .catch(err => Promise.reject(err))
     .then(cleanupTempFiles)
 }
 
