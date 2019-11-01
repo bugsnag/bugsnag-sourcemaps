@@ -147,3 +147,36 @@ test('multiple uploads (resolving relative source paths inside map)', () => {
     ])
   })
 })
+
+test('webpack paths', () => {
+  let mockCalled = 0
+  let mockCalledWith = []
+  const mockConcat = concat
+  jest.mock('../lib/request', () => {
+    return (endpoint, makePayload, onSuccess, onError) => {
+      mockCalled++
+      const payload = makePayload()
+      payload.sourceMap.pipe(mockConcat(data => {
+        payload.sourceMapData = JSON.parse(data)
+        mockCalledWith.push(payload)
+        onSuccess()
+      }))
+    }
+  })
+
+  const upload = require('../').upload
+  return upload({
+    apiKey: 'API_KEY',
+    projectRoot: `${__dirname}/fixtures/webpack`,
+    sourceMap: `${__dirname}/fixtures/webpack/main.js.map`,
+    minifiedFile: `${__dirname}/fixtures/webpack/main.js`,
+    minifiedUrl: 'http://yeah.no/bundle.js'
+  }).then(() => {
+    expect(mockCalled).toBe(1)
+
+    expect(mockCalledWith[0].sourceMapData.sources).toEqual([
+      'webpack:///webpack/bootstrap',
+      'webpack:///./src/index.js'
+    ])
+  })
+})
