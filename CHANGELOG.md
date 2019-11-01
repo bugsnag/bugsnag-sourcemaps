@@ -1,3 +1,9 @@
+# 1.2.2 (2019-11-01)
+
+## Bug fixes
+
+* Prevent `webpack:///` paths from being treated as relative and resolving incorrectly [#49](https://github.com/bugsnag/bugsnag-sourcemaps/pull/49)
+
 # 1.2.1 (2019-05-23)
 
 ## Bug fixes
