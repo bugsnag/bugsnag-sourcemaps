@@ -49,7 +49,7 @@ test('multiple uploads', () => {
         minifiedFile: payload.minifiedFile.path,
         sourceMap: path.basename(payload.sourceMap.path)
       })
-    }, []).sort((a, b) => a.minifiedUrl > b.minifiedUrl)
+    }, []).sort((a, b) => (a.minifiedUrl > b.minifiedUrl) ? 1 : -1)
 
     expect(uploads).toEqual([
       {
@@ -107,7 +107,7 @@ test('multiple uploads (resolving relative source paths inside map)', () => {
         sourceMap: path.basename(payload.sourceMap.path),
         sourceMapData: payload.sourceMapData
       })
-    }, []).sort((a, b) => a.minifiedUrl > b.minifiedUrl)
+    }, []).sort((a, b) => (a.minifiedUrl > b.minifiedUrl) ? 1 : -1)
 
     const orderedSourceMapContent = uploads.map(u => {
       const data = u.sourceMapData
