@@ -8,7 +8,7 @@ afterEach(() => jest.resetModules())
 test('single uploads', () => {
   let mockCalled = 0
   jest.mock('../lib/request', () => {
-    return (endpoint, makePayload, onSuccess, onError) => {
+    return (endpoint, makePayload, onSuccess, onError, opts) => {
       mockCalled++
       onSuccess()
     }
@@ -28,7 +28,7 @@ test('multiple uploads', () => {
   let mockCalled = 0
   let mockCalledWith = []
   jest.mock('../lib/request', () => {
-    return (endpoint, makePayload, onSuccess, onError) => {
+    return (endpoint, makePayload, onSuccess, onError, opts) => {
       mockCalled++
       mockCalledWith.push(makePayload())
       onSuccess()
@@ -81,7 +81,7 @@ test('multiple uploads (resolving relative source paths inside map)', () => {
   let mockCalledWith = []
   const mockConcat = concat
   jest.mock('../lib/request', () => {
-    return (endpoint, makePayload, onSuccess, onError) => {
+    return (endpoint, makePayload, onSuccess, onError, opts) => {
       mockCalled++
       const payload = makePayload()
       payload.sourceMap.pipe(mockConcat(data => {
@@ -153,7 +153,7 @@ test('webpack paths', () => {
   let mockCalledWith = []
   const mockConcat = concat
   jest.mock('../lib/request', () => {
-    return (endpoint, makePayload, onSuccess, onError) => {
+    return (endpoint, makePayload, onSuccess, onError, opts) => {
       mockCalled++
       const payload = makePayload()
       payload.sourceMap.pipe(mockConcat(data => {
