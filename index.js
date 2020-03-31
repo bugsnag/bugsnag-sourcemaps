@@ -21,7 +21,7 @@ const noopLogger = { debug: () => {}, info: () => {}, warn: () => {}, error: () 
  * @returns {Promise<string>}
  */
 function sendRequest (options) {
-  return new Promise((resolve, reject) => request(options.endpoint, () => prepareRequest(options), () => resolve(options), reject))
+  return new Promise((resolve, reject) => request(options.endpoint, () => prepareRequest(options), () => resolve(options), reject, options))
 }
 
 /**

@@ -73,6 +73,7 @@ import path from 'path';
 import { upload } from 'bugsnag-sourcemaps';
 
 upload({
+  agent, // optional (node http agent)
   apiKey: 'YOUR_API_KEY_HERE',
   appVersion: '1.2.3', // optional
   codeBundleId: '1.0-123', // optional (react-native only)
