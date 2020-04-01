@@ -1,3 +1,9 @@
+# 1.3.0 (2020-04-01)
+
+## Improvements
+
+* Add support for configuring a proxy agent [#53](https://github.com/bugsnag/bugsnag-sourcemaps/pull/53)
+
 # 1.2.2 (2019-11-01)
 
 ## Bug fixes
