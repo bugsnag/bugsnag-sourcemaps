@@ -46,7 +46,7 @@ $ bugsnag-sourcemaps upload --api-key YOUR_API_KEY_HERE \
 -h, --help                 Prints this message
 -k, --api-key KEY          Your project API key
 -v, --app-version VERSION  The version number of your app
--c, --code-bundle-id ID    The code bundle id (react native only)
+-c, --code-bundle-id ID    The code bundle id (react-native only)
 -d, --directory [PATH]     Enable directory mode. Searches for multiple source
                            maps in the directory and uploads them all. Only
                            supply a path if the directory you want to search is
@@ -60,10 +60,10 @@ $ bugsnag-sourcemaps upload --api-key YOUR_API_KEY_HERE \
 -s, --source-map PATH      The path of the source map file (local)
 -p, --minified-file PATH   The path of the bundle (local)
 -u, --upload-sources       Upload source files referenced by the source map
+-n, --upload-node-modules  Upload dependency files referenced by the source map
 -r, --project-root PATH    The root path to remove from absolute file paths
--t, --strip-project-root   Strip the root path from file paths in the source map
 -w, --add-wildcard-prefix  Insert a wildcard prefix when stripping root path
--o, --overwrite            Overwite previously uploaded source maps
+-o, --overwrite            Overwrite previously uploaded source maps
 ```
 
 ## API Usage
