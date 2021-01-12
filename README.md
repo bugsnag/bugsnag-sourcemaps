@@ -1,3 +1,7 @@
+This package has been deprecated and replaced by [`@bugsnag/source-maps`](https://github.com/bugsnag/bugsnag-source-maps/). The new tool caters for all source map upload use cases: browser, node and React Native. Please upgrade at your earliest convenience.
+
+---
+
 # bugsnag-sourcemaps
 
 [![Latest version](https://img.shields.io/npm/v/bugsnag-sourcemaps.svg)](https://www.npmjs.com/package/bugsnag-sourcemaps)
