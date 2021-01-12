@@ -2,6 +2,7 @@
 
 const path = require('path')
 const concat = require('concat-stream')
+const ROOT = __dirname.split(path.sep).join('/')
 
 afterEach(() => jest.resetModules())
 
@@ -17,8 +18,8 @@ test('single uploads', () => {
   const upload = require('../').upload
   return upload({
     apiKey: 'API_KEY',
-    sourceMap: `${__dirname}/fixtures/single/noop.min.js.map`,
-    projectRoot: `${__dirname}/fixtures/single`
+    sourceMap: `${ROOT}/fixtures/single/noop.min.js.map`,
+    projectRoot: `${ROOT}/fixtures/single`
   }).then(() => {
     expect(mockCalled).toBe(1)
   })
@@ -38,7 +39,7 @@ test('multiple uploads', () => {
   const upload = require('../').upload
   return upload({
     apiKey: 'API_KEY',
-    projectRoot: `${__dirname}/fixtures/multi`,
+    projectRoot: `${ROOT}/fixtures/multi`,
     directory: true
   }).then(() => {
     expect(mockCalled).toBe(4)
@@ -54,22 +55,22 @@ test('multiple uploads', () => {
     expect(uploads).toEqual([
       {
         minifiedUrl: 'app.js',
-        minifiedFile: `${__dirname}/fixtures/multi/app.js`,
+        minifiedFile: `${ROOT}/fixtures/multi/app.js`,
         sourceMap: 'app.js.map'
       },
       {
         minifiedUrl: 'services/bugsnag.js',
-        minifiedFile: `${__dirname}/fixtures/multi/services/bugsnag.js`,
+        minifiedFile: `${ROOT}/fixtures/multi/services/bugsnag.js`,
         sourceMap: 'bugsnag.js.map'
       },
       {
         minifiedUrl: 'services/logger.js',
-        minifiedFile: `${__dirname}/fixtures/multi/services/logger.js`,
+        minifiedFile: `${ROOT}/fixtures/multi/services/logger.js`,
         sourceMap: 'logger.js.map'
       },
       {
         minifiedUrl: 'services/widget.js',
-        minifiedFile: `${__dirname}/fixtures/multi/services/widget.js`,
+        minifiedFile: `${ROOT}/fixtures/multi/services/widget.js`,
         sourceMap: 'widget.js.map'
       }
     ])
@@ -95,7 +96,7 @@ test('multiple uploads (resolving relative source paths inside map)', () => {
   const upload = require('../').upload
   return upload({
     apiKey: 'API_KEY',
-    projectRoot: `${__dirname}/fixtures/multi-relative`,
+    projectRoot: `${ROOT}/fixtures/multi-relative`,
     directory: true
   }).then(() => {
     expect(mockCalled).toBe(4)
@@ -119,22 +120,22 @@ test('multiple uploads (resolving relative source paths inside map)', () => {
     expect(uploads).toEqual([
       {
         minifiedUrl: 'lib/app.js',
-        minifiedFile: `${__dirname}/fixtures/multi-relative/lib/app.js`,
+        minifiedFile: `${ROOT}/fixtures/multi-relative/lib/app.js`,
         sourceMap: 'app.js.map'
       },
       {
         minifiedUrl: 'lib/services/bugsnag.js',
-        minifiedFile: `${__dirname}/fixtures/multi-relative/lib/services/bugsnag.js`,
+        minifiedFile: `${ROOT}/fixtures/multi-relative/lib/services/bugsnag.js`,
         sourceMap: 'bugsnag.js.map'
       },
       {
         minifiedUrl: 'lib/services/logger.js',
-        minifiedFile: `${__dirname}/fixtures/multi-relative/lib/services/logger.js`,
+        minifiedFile: `${ROOT}/fixtures/multi-relative/lib/services/logger.js`,
         sourceMap: 'logger.js.map'
       },
       {
         minifiedUrl: 'lib/services/widget.js',
-        minifiedFile: `${__dirname}/fixtures/multi-relative/lib/services/widget.js`,
+        minifiedFile: `${ROOT}/fixtures/multi-relative/lib/services/widget.js`,
         sourceMap: 'widget.js.map'
       }
     ])
