@@ -71,7 +71,8 @@ const cli = meow(`
   },
   string: [
     'app-version',
-    'api-key'
+    'api-key',
+    'code-bundle-id'
   ],
   boolean: [
     'overwrite',
